@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1.5 Years | Access Granted</title>
+    <title>Our Memories | Access Granted</title>
     <style>
         /* --- CONSTANTS & SYSTEM SETUP --- */
         :root {
@@ -19,6 +19,21 @@
             box-sizing: border-box;
         }
 
+        /* Custom Scrollbar (แถบเลื่อนหน้าจอสี All Black) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555555; 
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -27,6 +42,21 @@
             font-family: 'Courier New', Courier, monospace;
             overflow-x: hidden;
             user-select: none;
+        }
+
+        /* CRT Scanlines (เอฟเฟกต์เส้นหน้าจอคอมเก่า) */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 9999;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
         }
 
         /* --- STAGE 1: AI TERMINAL INTERFACE --- */
@@ -56,7 +86,7 @@
             line-height: 1.8;
             margin: 0 0 10px 0;
             white-space: pre-wrap;
-            display: none; /* ควบคุมด้วย JS ให้ค่อยๆ โผล่ */
+            display: none;
         }
 
         .input-prompt::before {
@@ -64,10 +94,12 @@
             color: var(--text-muted);
         }
 
+        /* Neon Text Glow (เรืองแสงข้อความตอนเจาะระบบผ่าน) */
         .system-success {
             color: var(--terminal-green);
             font-weight: bold;
-            text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+            text-shadow: 0 0 8px #00ff66, 0 0 15px rgba(0, 255, 102, 0.5);
+            letter-spacing: 1px;
         }
 
         .cursor {
@@ -125,14 +157,12 @@
             letter-spacing: 2px;
         }
 
-        /* Photo Grid Layout */
         .photo-gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
 
-        /* Glassmorphic Cyber Cards */
         .photo-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
@@ -144,6 +174,19 @@
             transform: translateY(40px);
             opacity: 0;
             transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+        }
+
+        /* Film Grain Overlay (เพิ่มน้อยส์ให้แกลเลอรี) */
+        .photo-card::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 2;
+            mix-blend-mode: overlay;
         }
 
         .photo-card.reveal {
@@ -168,7 +211,6 @@
             transition: all 0.6s ease;
         }
 
-        /* Hover Effect: ดึงรูปภาพกลับมามีชีวิต */
         .photo-card:hover {
             border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-5px) scale(1.01);
@@ -192,7 +234,6 @@
             color: var(--text-pure);
         }
 
-        /* Mobile Audio Control */
         #audio-status {
             position: fixed;
             bottom: 20px;
@@ -232,7 +273,7 @@
 
     <main id="main-content">
         <div class="header-section">
-            <h1>1.5 Years Anniversary</h1>
+            <h1>Our Anniversary</h1>
             <p>SCROLLING THROUGH THE TIMELINE</p>
         </div>
 
@@ -272,12 +313,10 @@
     <script>
         let isRunning = false;
 
-        // ฟังก์ชันสั่งรัน Terminal ตอนกดหน้าจอครั้งแรก
         function startExecution() {
             if (isRunning) return;
             isRunning = true;
 
-            // ปลดล็อคระบบเสียง (Play Music)
             const audio = document.getElementById('vibe-music');
             audio.play().then(() => {
                 document.getElementById('audio-status').style.display = 'block';
@@ -286,34 +325,27 @@
             const lines = document.querySelectorAll('.code-line');
             let delay = 300;
 
-            // ค่อยๆ ไล่โชว์ตัวหนังสือทีละบรรทัดแบบเรียลไทม์
             for (let idx = 2; idx < lines.length; idx++) {
                 setTimeout(() => {
                     lines[idx].style.display = 'block';
-                    // สั่งเลื่อนหน้าจอลงอัตโนมัติถ้าตัวหนังสือยาวเกิน
                     window.scrollTo(0, document.body.scrollHeight);
                     
-                    // จังหวะบรรทัดสุดท้าย (Access Granted) รันเสร็จ
                     if (idx === lines.length - 1) {
                         triggerGlitchAndReveal();
                     }
                 }, delay);
-                // ตั้งค่าดีเลย์ให้ความเร็วสุ่มนิดๆ เพิ่มความสมจริงเหมือนคอมกำลังประมวลผล
                 delay += (200 + Math.random() * 250); 
             }
         }
 
-        // เอฟเฟกต์หน้าจอช็อตแฮกเกอร์ก่อนสลับหน้าเว็บ
         function triggerGlitchAndReveal() {
             setTimeout(() => {
                 const terminal = document.getElementById('terminal-screen');
                 terminal.classList.add('glitch-active');
 
                 setTimeout(() => {
-                    // ปิดหน้าจอ Terminal
                     terminal.style.opacity = '0';
                     
-                    // เปิดหน้าแกลเลอรีรูปภาพหลัก
                     const mainContent = document.getElementById('main-content');
                     mainContent.style.visibility = 'visible';
                     mainContent.style.opacity = '1';
@@ -323,17 +355,16 @@
                         revealGalleryCards();
                     }, 800);
 
-                }, 700); // ระยะเวลาที่หน้าจอจะสั่น/ช็อต (0.7 วินาที)
+                }, 700); 
             }, 1000);
         }
 
-        // ค่อยๆ เฟดการ์ดรูปภาพขึ้นมาทีละใบอย่างนุ่มนวลหลังจากโหลดหน้าหลักเสร็จ
         function revealGalleryCards() {
             const cards = document.querySelectorAll('.photo-card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
                     card.classList.add('reveal');
-                }, index * 200); // หน่วงเวลาใบละ 0.2 วินาทีให้เรียงขึ้นมาสวยๆ
+                }, index * 200); 
             });
         }
     </script>
