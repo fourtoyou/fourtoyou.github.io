@@ -18,12 +18,11 @@
             margin: 0; padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Mali', cursive; /* ใช้ฟอนต์ลายมือ */
+            font-family: 'Mali', cursive;
             overflow-x: hidden;
             user-select: none;
         }
 
-        /* --- หน้าแรกกวนๆ แตะเพื่อเริ่ม --- */
         #start-screen {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -58,11 +57,10 @@
             box-shadow: 2px 2px 0px var(--text-color);
         }
 
-        /* --- หน้าแกลเลอรีสไตล์สมุดจด (Scrapbook) --- */
         #main-gallery {
             display: none;
             padding: 60px 20px;
-            max-width: 1000px;
+            max-width: 1200px; /* ขยายให้กว้างขึ้นเพื่อรองรับรูปเยอะๆ */
             margin: 0 auto;
             text-align: center;
             opacity: 0;
@@ -77,7 +75,6 @@
             display: inline-block;
         }
 
-        /* ไฮไลต์สีฟ้าหลังข้อความ */
         .gallery-header::after {
             content: ''; position: absolute;
             bottom: 8px; left: -5%; width: 110%; height: 20px;
@@ -91,14 +88,12 @@
             margin-bottom: 60px; font-weight: 600;
         }
 
-        /* Grid รูปภาพขี้เล่น */
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
         }
 
-        /* การ์ดรูปภาพสไตล์วาดมือ */
         .photo-card {
             background: white; padding: 15px 15px 20px 15px;
             border-radius: 20px; border: 3px solid var(--text-color);
@@ -114,30 +109,35 @@
 
         .photo-card:hover {
             transform: translateY(-10px) rotate(3deg);
+            z-index: 5;
         }
         
         .photo-card:nth-child(even):hover {
             transform: translateY(-10px) rotate(-3deg);
         }
 
-        /* สก็อตเทปแปะรูป */
         .tape {
             position: absolute; top: -15px; left: 50%;
             transform: translateX(-50%) rotate(-2deg);
             width: 80px; height: 30px;
-            background-color: rgba(255, 107, 107, 0.6); /* สีแดงใสๆ */
+            background-color: rgba(255, 107, 107, 0.6);
             z-index: 10;
         }
         
         .photo-card:nth-child(even) .tape {
-            background-color: rgba(52, 152, 219, 0.6); /* สลับเป็นสีฟ้าใสๆ */
+            background-color: rgba(52, 152, 219, 0.6);
             transform: translateX(-50%) rotate(3deg);
+        }
+        
+        .photo-card:nth-child(3n) .tape {
+            background-color: rgba(241, 196, 15, 0.6); /* เพิ่มสก็อตเทปสีเหลืองใสให้ดูมีสีสันขึ้น */
         }
 
         .img-wrap {
             width: 100%; aspect-ratio: 1/1;
             overflow: hidden; border-radius: 12px;
             border: 2px solid var(--text-color);
+            background-color: #eee; /* สีพื้นหลังเผื่อรูปโหลดไม่ทัน */
         }
 
         .img-wrap img {
@@ -145,11 +145,10 @@
         }
 
         .caption {
-            margin-top: 15px; font-size: 1.2rem;
+            margin-top: 15px; font-size: 1.1rem;
             font-weight: 700; color: var(--text-color);
         }
 
-        /* ซ่อน Youtube Iframe */
         #youtube-player { display: none; }
     </style>
 </head>
@@ -165,36 +164,41 @@
         <div class="gallery-subtitle">แค่อยู่กับเธอไปเรื่อยๆ 🌻</div>
         
         <div class="photo-grid">
-            <div class="photo-card">
-                <div class="tape"></div>
-                <div class="img-wrap"><img src="3.jpg" alt="pic"></div>
-                <div class="caption">รูปเงาเท่ๆ 😎</div>
-            </div>
-            <div class="photo-card">
-                <div class="tape"></div>
-                <div class="img-wrap"><img src="9.jpg" alt="pic"></div>
-                <div class="caption">มือใครเนี่ย ✌️</div>
-            </div>
-            <div class="photo-card">
-                <div class="tape"></div>
-                <div class="img-wrap"><img src="11.jpg" alt="pic"></div>
-                <div class="caption">แวะมาทะเล 🌊</div>
-            </div>
-            <div class="photo-card">
-                <div class="tape"></div>
-                <div class="img-wrap"><img src="20.jpg" alt="pic"></div>
-                <div class="caption">หมั่นเขี้ยว! 🤏</div>
-            </div>
-            <div class="photo-card">
-                <div class="tape"></div>
-                <div class="img-wrap"><img src="1603_0.jpg" alt="pic"></div>
-                <div class="caption">เผลอๆ 📸</div>
-            </div>
-            <div class="photo-card">
-                <div class="tape"></div>
-                <div class="img-wrap"><img src="1592_0.jpg" alt="pic"></div>
-                <div class="caption">เล่นกับเจ้าตูบ 🐕</div>
-            </div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1.jpg" alt="pic"></div><div class="caption">💖</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="2.jpg" alt="pic"></div><div class="caption">😜</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="3.jpg" alt="pic"></div><div class="caption">เงาเท่ๆ 😎</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="4.jpg" alt="pic"></div><div class="caption">✨</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="5.jpg" alt="pic"></div><div class="caption">👀</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="6.jpg" alt="pic"></div><div class="caption">✌️</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="7.jpg" alt="pic"></div><div class="caption">🌻</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="8.jpg" alt="pic"></div><div class="caption">😝</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="9.jpg" alt="pic"></div><div class="caption">🫶</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="10.jpg" alt="pic"></div><div class="caption">🌊</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="11.jpg" alt="pic"></div><div class="caption">สดใสสุดๆ ☀️</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="12.jpg" alt="pic"></div><div class="caption">🏖️</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="13.jpg" alt="pic"></div><div class="caption">🌟</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="14.jpg" alt="pic"></div><div class="caption">📷</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="15.jpg" alt="pic"></div><div class="caption">😋</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="16.jpg" alt="pic"></div><div class="caption">👟</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="17.jpg" alt="pic"></div><div class="caption">🌱</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="18.jpg" alt="pic"></div><div class="caption">เดินเล่น 🚶‍♀️</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="19.jpg" alt="pic"></div><div class="caption">😆</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="20.jpg" alt="pic"></div><div class="caption">หมั่นเขี้ยว! 🤏</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="21.jpg" alt="pic"></div><div class="caption">🍦</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="22.jpg" alt="pic"></div><div class="caption">🥰</div></div>
+
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1592_0.jpg" alt="pic"></div><div class="caption">เจ้าตูบ 🐕</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1593_0.jpg" alt="pic"></div><div class="caption">🐾</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1603_0.jpg" alt="pic"></div><div class="caption">เผลอๆ 📸</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1604_0.jpg" alt="pic"></div><div class="caption">ลมเย็นๆ 🌬️</div></div>
+
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_1.jpg" alt="pic"></div><div class="caption">🌸</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_2.jpg" alt="pic"></div><div class="caption">🥤</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_3.jpg" alt="pic"></div><div class="caption">🌺</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_4.jpg" alt="pic"></div><div class="caption">ธรรมชาติ 🌿</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_5.jpg" alt="pic"></div><div class="caption">🌷</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_6.jpg" alt="pic"></div><div class="caption">คูลๆ 😎</div></div>
+            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_7.jpg" alt="pic"></div><div class="caption">ยิ้มหวาน 😊</div></div>
         </div>
     </main>
 
@@ -207,27 +211,23 @@
             if (isStarted) return;
             isStarted = true;
 
-            // 1. ฝังโค้ด YouTube เพลง Undefined (แค่อยู่กับเธอ) ของ HYE แบบซ่อน
             const ytContainer = document.getElementById('youtube-player');
             ytContainer.innerHTML = '<iframe width="0" height="0" src="https://www.youtube.com/embed/yWfO_hE81WQ?autoplay=1&loop=1&playlist=yWfO_hE81WQ" frameborder="0" allow="autoplay; encrypted-media"></iframe>';
 
-            // 2. ปิดหน้าจอสีเหลืองด้วยเอฟเฟกต์กระเด้งขึ้นด้านบน
             const startScreen = document.getElementById('start-screen');
             startScreen.style.transform = 'translateY(-100vh)';
             startScreen.style.opacity = '0';
 
-            // 3. โชว์แกลเลอรีรูปภาพ
             setTimeout(() => {
                 startScreen.style.display = 'none';
                 const gallery = document.getElementById('main-gallery');
                 gallery.style.display = 'block';
 
-                // สั่งให้รูปค่อยๆ เด้งโผล่ขึ้นมาทีละรูป
                 const cards = document.querySelectorAll('.photo-card');
                 cards.forEach((card, index) => {
                     setTimeout(() => {
                         card.classList.add('show');
-                    }, 500 + (index * 150));
+                    }, 300 + (index * 80)); /* ปรับความเร็วการเด้งโชว์ให้ไวขึ้นเพราะรูปเยอะ */
                 });
             }, 700);
         }
