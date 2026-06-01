@@ -3,250 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Memories | Access Granted</title>
+    <title>Our Memories 💖</title>
     <style>
-        /* --- CONSTANTS & SYSTEM SETUP --- */
+        /* --- ตั้งค่าโทนสีน่ารักๆ (พาสเทล) --- */
         :root {
-            --bg-dark: #050505;
-            --terminal-green: #00ff66;
-            --text-pure: #ffffff;
-            --text-muted: #555555;
-            --glass-bg: rgba(255, 255, 255, 0.02);
-            --glass-border: rgba(255, 255, 255, 0.05);
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        /* Custom Scrollbar (แถบเลื่อนหน้าจอสี All Black) */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333333; 
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555555; 
+            --bg-color: #fff0f5; /* สีพื้นหลังชมพูอ่อนละมุน */
+            --text-main: #5d4037; /* สีตัวหนังสือโทนน้ำตาลอุ่นๆ */
+            --text-light: #8d6e63;
+            --accent-pink: #ffb6c1;
         }
 
         body {
             margin: 0;
             padding: 0;
-            background-color: var(--bg-dark);
-            color: var(--text-pure);
-            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
-            user-select: none;
         }
 
-        /* CRT Scanlines (เอฟเฟกต์เส้นหน้าจอคอมเก่า) */
-        body::after {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 9999;
-            background-size: 100% 3px, 3px 100%;
-            pointer-events: none;
-        }
-
-        /* --- STAGE 1: AI TERMINAL INTERFACE --- */
-        #terminal-screen {
+        /* --- หน้า Welcome น่ารักๆ ตอนเปิดเว็บ --- */
+        #welcome-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            background-color: var(--bg-dark);
-            z-index: 999;
+            background-color: var(--bg-color);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            transition: opacity 0.8s ease;
+            z-index: 999;
+            transition: opacity 1s ease-in-out;
+            cursor: pointer;
         }
 
-        .terminal-container {
-            width: 100%;
-            max-width: 650px;
-            text-align: left;
+        .heart-icon {
+            font-size: 3rem;
+            animation: heartbeat 1.5s infinite;
+            margin-bottom: 20px;
         }
 
-        .code-line {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin: 0 0 10px 0;
-            white-space: pre-wrap;
-            display: none;
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
         }
 
-        .input-prompt::before {
-            content: "> ";
-            color: var(--text-muted);
-        }
-
-        /* Neon Text Glow (เรืองแสงข้อความตอนเจาะระบบผ่าน) */
-        .system-success {
-            color: var(--terminal-green);
+        .typing-text {
+            font-size: 1.5rem;
+            min-height: 2.5rem;
             font-weight: bold;
-            text-shadow: 0 0 8px #00ff66, 0 0 15px rgba(0, 255, 102, 0.5);
-            letter-spacing: 1px;
+            color: var(--text-main);
         }
 
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 1.2rem;
-            background-color: var(--text-pure);
-            animation: blink 0.8s step-end infinite;
-            margin-left: 4px;
-            vertical-align: middle;
+        .tap-hint {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            animation: bounce 2s infinite;
         }
 
-        @keyframes blink { 50% { opacity: 0; } }
-
-        /* --- GLITCH TRANSITION EFFECT --- */
-        .glitch-active {
-            animation: glitch-anim 0.3s linear infinite;
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
-        @keyframes glitch-anim {
-            0% { transform: translate(0) skew(0deg); filter: hue-rotate(0deg); }
-            20% { transform: translate(-3px, 2px) skew(-3deg); filter: invert(0.1); }
-            40% { transform: translate(3px, -1px) skew(2deg); }
-            60% { transform: translate(-1px, -2px) skew(0deg); filter: blur(1px); }
-            80% { transform: translate(2px, 1px) skew(4deg); }
-            100% { transform: translate(0) skew(0deg); }
+        /* --- เอฟเฟกต์หัวใจลอยขึ้นตอนกดหน้าจอ --- */
+        .floating-heart {
+            position: absolute;
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: floatUp 1.5s ease-out forwards;
         }
 
-        /* --- STAGE 2: MAIN GALLERY (STREET ALL BLACK) --- */
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+        }
+
+        /* --- หน้า Gallery โพลารอยด์ --- */
         #main-content {
             opacity: 0;
             visibility: hidden;
             transition: opacity 1.5s ease-in-out;
-            padding: 60px 20px;
-            max-width: 1100px;
+            padding: 50px 20px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         .header-section {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
         }
 
         .header-section h1 {
-            font-size: 2rem;
-            font-weight: 300;
-            letter-spacing: 4px;
-            margin: 0 0 15px 0;
-            text-transform: uppercase;
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
+            color: var(--text-main);
         }
 
         .header-section p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            letter-spacing: 2px;
+            font-size: 1rem;
+            color: var(--text-light);
+            margin: 0;
         }
 
         .photo-gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
         }
 
-        .photo-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 12px;
-            overflow: hidden;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transform: translateY(40px);
+        /* สไตล์กรอบรูปโพลารอยด์ */
+        .polaroid-card {
+            background-color: white;
+            padding: 15px 15px 40px 15px;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transform: translateY(30px) rotate(calc(var(--rot) * 1deg));
             opacity: 0;
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
         }
 
-        /* Film Grain Overlay (เพิ่มน้อยส์ให้แกลเลอรี) */
-        .photo-card::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 2;
-            mix-blend-mode: overlay;
+        .polaroid-card.reveal {
+            transform: translateY(0) rotate(calc(var(--rot) * 1deg));
+            opacity: 1;
         }
 
-        .photo-card.reveal {
-            transform: translateY(0);
-            opacity: 1;
+        .polaroid-card:hover {
+            transform: translateY(-10px) rotate(0deg) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 10;
         }
 
         .img-wrapper {
             width: 100%;
+            aspect-ratio: 1/1; /* ทำรูปให้เป็นสี่เหลี่ยมจัตุรัสแบบไอจี */
             overflow: hidden;
-            border-radius: 8px;
-            aspect-ratio: 4/5;
-            background-color: #111;
-            position: relative;
+            background-color: #f8f8f8;
         }
 
-        .photo-card img {
+        .polaroid-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) contrast(1.1) brightness(0.8);
-            transition: all 0.6s ease;
+            transition: transform 0.5s ease;
         }
 
-        .photo-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px) scale(1.01);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-        }
-
-        .photo-card:hover img {
-            filter: grayscale(0%) contrast(1) brightness(1);
-            transform: scale(1.04);
+        .polaroid-card:hover img {
+            transform: scale(1.05);
         }
 
         .card-caption {
-            margin-top: 12px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            transition: color 0.4s ease;
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 1rem;
+            color: var(--text-main);
+            font-weight: 500;
         }
 
-        .photo-card:hover .card-caption {
-            color: var(--text-pure);
-        }
-
-        #audio-status {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            background: rgba(0,0,0,0.5);
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            z-index: 1000;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -255,117 +176,114 @@
         <source src="your-song.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="terminal-screen" onclick="startExecution()">
-        <div class="terminal-container" id="terminal-box">
-            <div class="code-line input-prompt" style="display: block;">system.init_handshake()</div>
-            <div class="code-line system-success" style="display: block; margin-bottom: 20px;">[CLICK ANYWHERE TO DISCOVER MEMORIES]</div>
-            
-            <div class="code-line input-prompt">import machine_learning as ml</div>
-            <div class="code-line input-prompt">import anniversary_dataset as us</div>
-            <div class="code-line">>> Loading core_metrics... (547 days detected)</div>
-            <div class="code-line input-prompt">model = ml.CompatibilityModel(us.you, us.me)</div>
-            <div class="code-line input-prompt">model.analyze_connection_vibe()</div>
-            <div class="code-line">>> Calibrating heart_rates... [||||||||||||||||] 100%</div>
-            <div class="code-line system-success">> STATUS: MATCH CONFIRMED (100%)</div>
-            <div class="code-line system-success">> ACCESS GRANTED. DEPLOYING VISUALS...<span class="cursor"></span></div>
-        </div>
+    <div id="welcome-screen" onclick="startLove()">
+        <div class="heart-icon">💖</div>
+        <div class="typing-text" id="typewriter"></div>
+        <div class="tap-hint">แตะหน้าจอเพื่อเปิดดูความทรงจำ 🐾</div>
     </div>
 
     <main id="main-content">
         <div class="header-section">
-            <h1>Our Anniversary</h1>
-            <p>SCROLLING THROUGH THE TIMELINE</p>
+            <h1>Happy Anniversary ✨</h1>
+            <p>รวมความน่ารักของเราไว้ตรงนี้หมดแล้ว</p>
         </div>
 
         <div class="photo-gallery">
-            <div class="photo-card">
+            <div class="polaroid-card" style="--rot: -2;">
                 <div class="img-wrapper">
                     <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=600&auto=format&fit=crop" alt="Memory">
                 </div>
-                <div class="card-caption">LOC: MEMORY_01 // CODES_AND_VIBES</div>
+                <div class="card-caption">ไปกินหม่าล่าด้วยกัน 🥢</div>
             </div>
 
-            <div class="photo-card">
+            <div class="polaroid-card" style="--rot: 3;">
                 <div class="img-wrapper">
                     <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=600&auto=format&fit=crop" alt="Memory">
                 </div>
-                <div class="card-caption">LOC: MEMORY_02 // APPLIED_AI_MOMENT</div>
+                <div class="card-caption">วุ่นวายกับเจ้าส้ม 🐈</div>
             </div>
 
-            <div class="photo-card">
+            <div class="polaroid-card" style="--rot: -1;">
                 <div class="img-wrapper">
                     <img src="https://images.unsplash.com/photo-1518182170546-076616fd4775?q=80&w=600&auto=format&fit=crop" alt="Memory">
                 </div>
-                <div class="card-caption">LOC: MEMORY_03 // CAT_MOMENT_WITH_SOM</div>
+                <div class="card-caption">รอยยิ้มแบบนี้แหละที่ชอบ 🌸</div>
             </div>
 
-            <div class="photo-card">
+            <div class="polaroid-card" style="--rot: 2;">
                 <div class="img-wrapper">
                     <img src="https://images.unsplash.com/photo-1557180295-76faa20b6f16?q=80&w=600&auto=format&fit=crop" alt="Memory">
                 </div>
-                <div class="card-caption">LOC: MEMORY_04 // STREET_BLACK_VIBES</div>
+                <div class="card-caption">อยู่ด้วยกันไปนานๆ นะ 💖</div>
             </div>
         </div>
     </main>
 
-    <div id="audio-status">🔊 Vibe audio playing...</div>
-
     <script>
-        let isRunning = false;
+        const text = "To my favorite person...";
+        let i = 0;
+        let isOpened = false;
 
-        function startExecution() {
-            if (isRunning) return;
-            isRunning = true;
-
-            const audio = document.getElementById('vibe-music');
-            audio.play().then(() => {
-                document.getElementById('audio-status').style.display = 'block';
-            }).catch(e => console.log("Audio play blocked by browser setup"));
-
-            const lines = document.querySelectorAll('.code-line');
-            let delay = 300;
-
-            for (let idx = 2; idx < lines.length; idx++) {
-                setTimeout(() => {
-                    lines[idx].style.display = 'block';
-                    window.scrollTo(0, document.body.scrollHeight);
-                    
-                    if (idx === lines.length - 1) {
-                        triggerGlitchAndReveal();
-                    }
-                }, delay);
-                delay += (200 + Math.random() * 250); 
+        // เอฟเฟกต์พิมพ์ดีดข้อความน่ารักๆ
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
             }
         }
 
-        function triggerGlitchAndReveal() {
+        window.onload = () => {
+            setTimeout(typeWriter, 500);
+        };
+
+        // สร้างหัวใจลอยตอนคลิกหน้าจอ
+        function createFloatingHeart(e) {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = ['💖', '🌸', '✨', '🐾'][Math.floor(Math.random() * 4)];
+            heart.style.left = `${e.clientX - 15}px`;
+            heart.style.top = `${e.clientY - 15}px`;
+            document.body.appendChild(heart);
+
             setTimeout(() => {
-                const terminal = document.getElementById('terminal-screen');
-                terminal.classList.add('glitch-active');
-
-                setTimeout(() => {
-                    terminal.style.opacity = '0';
-                    
-                    const mainContent = document.getElementById('main-content');
-                    mainContent.style.visibility = 'visible';
-                    mainContent.style.opacity = '1';
-
-                    setTimeout(() => {
-                        terminal.style.display = 'none';
-                        revealGalleryCards();
-                    }, 800);
-
-                }, 700); 
-            }, 1000);
+                heart.remove();
+            }, 1500);
         }
 
-        function revealGalleryCards() {
-            const cards = document.querySelectorAll('.photo-card');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.classList.add('reveal');
-                }, index * 200); 
-            });
+        // กดเพื่อเข้าสู่หน้าแกลเลอรี
+        function startLove(event) {
+            if(event) createFloatingHeart(event);
+            
+            if (isOpened) return;
+            isOpened = true;
+
+            // เล่นเพลง
+            const audio = document.getElementById('vibe-music');
+            audio.play().catch(e => console.log("Audio skipped"));
+
+            const welcomeScreen = document.getElementById('welcome-screen');
+            welcomeScreen.style.opacity = '0';
+
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+                
+                const mainContent = document.getElementById('main-content');
+                mainContent.style.visibility = 'visible';
+                mainContent.style.opacity = '1';
+
+                // โชว์รูปโพลารอยด์ทีละใบ
+                const cards = document.querySelectorAll('.polaroid-card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('reveal');
+                    }, index * 250); 
+                });
+                
+                // คลิกที่ไหนบนจอก็ให้มีหัวใจลอยขึ้นมา
+                document.body.addEventListener('click', createFloatingHeart);
+
+            }, 1000);
         }
     </script>
 </body>
