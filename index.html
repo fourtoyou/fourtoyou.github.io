@@ -1,143 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1.5 Years | Our Scrapbook 🌻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1.5 Years | Memory Book</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-color: #f0f4f8;
-            --text-color: #2c3e50;
-            --cover-color: #a2d2ff;
-            --paper-color: #fffcf8;
-            --accent-pink: #ffafcc;
-            --accent-yellow: #fde2e4;
+            --bg-dark: #1a1a24;
+            --paper-color: #fcf9f2;
+            --cover-front: url('https://images.unsplash.com/photo-1618335829737-2228915674e0?q=80&w=800&auto=format&fit=crop'); /* พื้นผิวปกหนังสือ */
+            --text-dark: #2c3e50;
         }
 
         body {
             margin: 0; padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Mali', cursive;
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, #2a2a35 0%, #1a1a24 100%);
             display: flex; justify-content: center; align-items: center;
             height: 100vh; overflow: hidden;
-            background-image: radial-gradient(#d1e8e2 1px, transparent 1px);
-            background-size: 20px 20px;
+            font-family: 'Mali', cursive;
         }
 
-        /* --- ปุ่มควบคุมเพลง --- */
-        #music-toggle {
-            position: fixed; bottom: 20px; right: 20px;
-            background: white; border: 3px solid var(--text-color);
-            padding: 10px 20px; border-radius: 30px;
-            font-family: 'Mali', cursive; font-weight: bold; font-size: 1rem;
-            box-shadow: 4px 4px 0px var(--text-color);
-            cursor: pointer; z-index: 9999;
-            transition: transform 0.1s;
-            display: flex; align-items: center; gap: 8px;
-        }
-        #music-toggle:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--text-color); }
-
-        /* --- โครงสร้างสมุด 3D --- */
-        .book-container {
+        /* --- โครงสร้างสมุด 3D สมจริง --- */
+        #book-wrapper {
             position: relative;
-            width: 90vw; max-width: 420px; /* ขนาดเหมาะกับมือถือ */
-            height: 75vh; max-height: 600px;
-            perspective: 1500px;
+            width: 90vw; max-width: 800px;
+            height: 60vh; max-height: 500px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 5px;
+            transition: transform 1s ease;
         }
 
+        /* คลาสของหน้ากระดาษ */
         .page {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            transform-origin: left center;
-            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-            transform-style: preserve-3d;
-            border-radius: 5px 15px 15px 5px;
-            cursor: pointer;
-            box-shadow: inset 4px 0 10px rgba(0,0,0,0.1), 3px 3px 15px rgba(0,0,0,0.2);
-        }
-
-        /* สถานะตอนโดนพลิกหน้า */
-        .page.flipped {
-            transform: rotateY(-180deg);
-        }
-
-        .front, .back {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            backface-visibility: hidden;
-            border-radius: 5px 15px 15px 5px;
             background-color: var(--paper-color);
+            background-image: url('https://www.transparenttextures.com/patterns/rice-paper-2.png'); /* เท็กซ์เจอร์กระดาษ */
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05); /* เงาขอบกระดาษ */
             display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding: 20px; box-sizing: border-box;
+            justify-content: center; align-items: center;
             overflow: hidden;
-        }
-
-        .back {
-            transform: rotateY(180deg);
-            border-radius: 15px 5px 5px 15px; /* สลับมุมกระดาษด้านหลัง */
-            box-shadow: inset -4px 0 10px rgba(0,0,0,0.1);
-        }
-
-        /* หน้าปกสมุด */
-        .cover { background-color: var(--cover-color); color: white; border: 2px solid var(--text-color); }
-        .cover .front { background-color: var(--cover-color); justify-content: center; }
-        .cover-title { font-size: 3.5rem; font-weight: 700; text-shadow: 3px 3px 0px var(--text-color); line-height: 1.2; text-align: center; }
-        .cover-subtitle { font-size: 1.2rem; margin-top: 10px; background: white; color: var(--text-color); padding: 5px 15px; border-radius: 20px; border: 2px solid var(--text-color); }
-        .tap-hint { position: absolute; bottom: 30px; font-size: 1rem; animation: bounce 1s infinite; }
-
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        /* สไตล์กรอบรูปโพลารอยด์ในหน้ากระดาษ */
-        .polaroid {
-            background: white; padding: 10px 10px 25px 10px;
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
-            border: 1px solid #ddd;
-            width: 85%; transform: rotate(-2deg);
             position: relative;
         }
-        .polaroid.right-tilt { transform: rotate(2deg); }
-        
-        .polaroid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid #eee; }
-        .polaroid-text { margin-top: 15px; font-size: 1.2rem; font-weight: bold; text-align: center; color: var(--text-color); }
 
-        /* สก็อตเทปตกแต่ง */
-        .tape {
-            position: absolute; top: -12px; left: 50%;
-            transform: translateX(-50%) rotate(-3deg);
-            width: 80px; height: 30px;
-            background-color: rgba(255, 175, 204, 0.7);
-            z-index: 5;
+        /* เงาสันหนังสือ (ตรงกลาง) */
+        .page.odd { background: linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 10%); border-radius: 0 4px 4px 0; }
+        .page.even { background: linear-gradient(to left, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 10%); border-radius: 4px 0 0 4px; }
+
+        /* --- หน้าปกและหลังปก --- */
+        .hardcover {
+            background-image: var(--cover-front);
+            background-size: cover; background-position: center;
+            border: 2px solid rgba(255,255,255,0.2);
+            color: white; text-align: center;
+            box-shadow: inset 5px 0 20px rgba(0,0,0,0.6);
         }
-        .tape-blue { background-color: rgba(162, 210, 255, 0.7); transform: translateX(-50%) rotate(2deg); }
 
-        /* เอฟเฟกต์พลุกระดาษตอนเปิดเล่ม */
-        .confetti { position: absolute; width: 10px; height: 10px; background-color: #f00; z-index: 9999; pointer-events: none; border-radius: 50%; }
+        .cover-content {
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            padding: 30px; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+        }
 
-        /* YouTube ซ่อน */
-        #yt-player { display: none; }
+        .cover-content h1 { font-size: 3rem; margin: 0 0 10px 0; letter-spacing: 2px; }
+        .cover-content p { font-size: 1.2rem; margin: 0; }
+        .swipe-hint { position: absolute; bottom: 20px; right: 20px; font-size: 0.9rem; animation: slide 1.5s infinite; }
+        @keyframes slide { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(15px); } }
+
+        /* --- สไตล์โพลารอยด์ระดับพรีเมียม --- */
+        .polaroid-frame {
+            background: #fff; padding: 12px 12px 30px 12px;
+            box-shadow: 2px 5px 15px rgba(0,0,0,0.15);
+            width: 75%; max-width: 280px;
+            position: relative;
+            transform: rotate(calc(var(--r) * 1deg));
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .polaroid-frame:hover { transform: scale(1.05) rotate(0deg); z-index: 10; box-shadow: 5px 10px 25px rgba(0,0,0,0.2); }
+        
+        .img-holder { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: #eee; }
+        .img-holder img { width: 100%; height: 100%; object-fit: cover; filter: sepia(10%) contrast(1.1); }
+        
+        .caption-text { margin-top: 15px; font-size: 1.1rem; font-weight: 700; color: var(--text-dark); text-align: center; }
+
+        /* สก็อตเทปใส 3D */
+        .tape-3d {
+            position: absolute; top: -15px; left: 50%; width: 90px; height: 35px;
+            background: rgba(255,255,255,0.4);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            backdrop-filter: blur(2px); border-radius: 2px;
+            border-left: 2px dashed rgba(0,0,0,0.1); border-right: 2px dashed rgba(0,0,0,0.1);
+        }
+
+        /* --- ปุ่มเพลง ลอยเด่นสวยๆ --- */
+        #music-ctrl {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3); color: white;
+            padding: 12px 25px; border-radius: 50px;
+            font-family: inherit; font-size: 1rem; cursor: pointer;
+            display: flex; align-items: center; gap: 10px; z-index: 9999;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: all 0.3s;
+        }
+        #music-ctrl:hover { background: rgba(255,255,255,0.2); transform: translateX(-50%) scale(1.05); }
+
+        /* ซ่อนหน้าก่อนที่ JS จะรันเสร็จ เพื่อความสวยงาม */
+        #book { visibility: hidden; }
+
     </style>
 </head>
 <body>
 
-    <div class="book-container" id="book">
-        <!-- หน้าสมุดจะถูกสร้างด้วย JavaScript อัตโนมัติ -->
+    <div id="book-wrapper">
+        <div id="book">
+            <div class="page hardcover">
+                <div class="cover-content">
+                    <h1>1.5 YEARS</h1>
+                    <p>Our Memories 🌻</p>
+                </div>
+                <div class="swipe-hint">ปัดเพื่อเปิด 👉</div>
+            </div>
+            <div class="page hardcover"></div>
+
+            <div class="page">
+                <h2 style="color: var(--text-dark); text-align: center; padding: 20px;">
+                    แค่อยู่กับเธอไปเรื่อยๆ<br>ก็มีความสุขแล้ว 💖
+                </h2>
+            </div>
+            
+            <div id="pages-container"></div>
+            
+            <div class="page hardcover"></div>
+            <div class="page hardcover" style="display: flex; justify-content: center; align-items: center;">
+                <h2 style="text-shadow: 2px 2px 5px rgba(0,0,0,0.8);">THE END.</h2>
+            </div>
+        </div>
     </div>
 
-    <!-- ปุ่มควบคุมเพลง -->
-    <div id="music-toggle" onclick="toggleMusic()">
-        <span id="music-icon">🎵</span> <span id="music-text">กำลังโหลดเพลง...</span>
-    </div>
-
-    <!-- YouTube API -->
-    <div id="yt-player"></div>
+    <button id="music-ctrl" onclick="toggleAudio()">
+        <span id="m-icon">🎵</span> <span id="m-text">เปิดเพลง (รอโหลด)</span>
+    </button>
+    <div id="yt-player" style="display: none;"></div>
 
     <script>
-        // ==========================================
-        // 1. ฐานข้อมูลรูปภาพทั้ง 33 รูป
-        // ==========================================
+        // 1. ฐานข้อมูลรูปภาพ
         const photos = [
             { src: '1.jpg', cap: '💖' }, { src: '2.jpg', cap: '😜' }, { src: '3.jpg', cap: 'เงาเท่ๆ 😎' },
             { src: '4.jpg', cap: '✨' }, { src: '5.jpg', cap: '👀' }, { src: '6.jpg', cap: '✌️' },
@@ -155,94 +168,74 @@
             { src: 'LINE_ALBUM_with u_260601_7.jpg', cap: 'ยิ้มหวาน 😊' }
         ];
 
-        // ==========================================
-        // 2. ระบบสร้างหน้ากระดาษสมุด
-        // ==========================================
-        const book = document.getElementById('book');
-        let zIndexCounter = 100; // จัดการลำดับชั้นกระดาษ
-
-        function createPage(frontContent, backContent, isCover = false) {
-            const page = document.createElement('div');
-            page.classList.add('page');
-            if(isCover) page.classList.add('cover');
-            page.style.zIndex = zIndexCounter--;
+        // 2. เจนหน้ากระดาษ
+        const bookDOM = document.getElementById('book');
+        const container = document.getElementById('pages-container');
+        
+        photos.forEach((photo, index) => {
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'page';
             
-            // ซ้อนหน้ากระดาษให้เหลื่อมกันนิดๆ ดูเป็นธรรมชาติ
-            page.style.top = `${Math.random() * 4 - 2}px`;
+            // สุ่มองศาเอียง และสุ่มสีเทป
+            const rot = (Math.random() * 6 - 3).toFixed(1);
+            const tapeRot = (Math.random() * 4 - 2).toFixed(1);
+            const colors = ['rgba(255, 175, 204, 0.6)', 'rgba(162, 210, 255, 0.6)', 'rgba(253, 226, 228, 0.8)'];
+            const tColor = colors[index % 3];
 
-            page.innerHTML = `
-                <div class="front">${frontContent}</div>
-                <div class="back">${backContent}</div>
+            pageDiv.innerHTML = `
+                <div class="polaroid-frame" style="--r: ${rot};">
+                    <div class="tape-3d" style="transform: translateX(-50%) rotate(${tapeRot}deg); background: ${tColor};"></div>
+                    <div class="img-holder"><img src="${photo.src}" alt="memories"></div>
+                    <div class="caption-text">${photo.cap}</div>
+                </div>
             `;
+            
+            // แทรกต่อจากหน้าเปิดตัว
+            bookDOM.insertBefore(pageDiv, bookDOM.children[3]); 
+        });
 
-            // ระบบคลิกพลิกหน้า
-            page.addEventListener('click', function() {
-                if (page.classList.contains('flipped')) {
-                    // พลิกกลับ (ปิด)
-                    page.classList.remove('flipped');
-                    page.style.zIndex = zIndexCounter++;
-                } else {
-                    // พลิกไปข้างหน้า (เปิด)
-                    page.classList.add('flipped');
-                    page.style.zIndex = -zIndexCounter; // ย้ายไปอยู่หลังสุด
-                    
-                    // ถ้าเปิดหน้าปกครั้งแรก ให้เริ่มเล่นเพลง & ยิงพลุ
-                    if(isCover && !isPlaying) {
-                        playMusic();
-                        fireConfetti();
+        // 3. เริ่มต้นไลบรารี Turn.js (รอให้โหลด DOM เสร็จ)
+        $(window).on('load', function() {
+            const bookEl = $('#book');
+            
+            // คำนวณขนาดสมุดตามหน้าจอ
+            let bWidth = window.innerWidth * 0.9;
+            let bHeight = window.innerHeight * 0.6;
+            if(bWidth > 800) bWidth = 800;
+            if(bHeight > 500) bHeight = 500;
+
+            bookEl.css('visibility', 'visible');
+            
+            bookEl.turn({
+                width: bWidth,
+                height: bHeight,
+                autoCenter: true,
+                display: 'double', // โชว์ทีละ 2 หน้า (หน้าคู่)
+                acceleration: true, // ทำให้พลิกสมูทในมือถือ
+                gradients: true, // แสงเงาตอนพับกระดาษสมจริงมาก
+                elevation: 50,
+                when: {
+                    turned: function(e, page) {
+                        // ปรับตำแหน่งสมุดให้อยู่ตรงกลางตอนเปิดหน้าปก
+                        if(page === 1 || page === $(this).turn('pages')) {
+                            $('#book-wrapper').css('transform', 'translateX(0)');
+                        } else {
+                            $('#book-wrapper').css('transform', 'translateX(0)'); // ปรับให้ center ตลอด
+                        }
                     }
                 }
             });
+            
+            // ถ้าเปิดในมือถือแนวตั้ง ให้ปรับเป็นโชว์ทีละหน้า
+            if (window.innerWidth < 600) {
+                bookEl.turn("display", "single");
+            }
+        });
 
-            return page;
-        }
-
-        // --- สร้างหน้าปก ---
-        const coverFront = `
-            <div class="cover-title">1.5 YRS</div>
-            <div class="cover-subtitle">แค่อยู่กับเธอไปเรื่อยๆ 🌻</div>
-            <div class="tap-hint">👆 แตะเพื่อเปิดสมุด</div>
-        `;
-        const coverBack = `<h2 style="color: var(--text-color);">ความทรงจำของเรา 💖</h2>`;
-        book.appendChild(createPage(coverFront, coverBack, true));
-
-        // --- สร้างหน้าด้านใน (เอารูปมาจับคู่ หน้า-หลัง) ---
-        for (let i = 0; i < photos.length; i += 2) {
-            const frontPhoto = photos[i];
-            const backPhoto = photos[i+1] || { src: '1.jpg', cap: 'The End 💖' }; // ถ้ารูปคี่ ให้รูปสุดท้ายปิดท้าย
-
-            const tapeClassF = i % 3 === 0 ? 'tape-blue' : '';
-            const tapeClassB = (i+1) % 3 === 0 ? 'tape-blue' : '';
-            const tiltF = i % 2 === 0 ? 'right-tilt' : '';
-            const tiltB = i % 2 !== 0 ? 'right-tilt' : '';
-
-            const frontHTML = `
-                <div class="polaroid ${tiltF}">
-                    <div class="tape ${tapeClassF}"></div>
-                    <img src="${frontPhoto.src}" alt="memory">
-                    <div class="polaroid-text">${frontPhoto.cap}</div>
-                </div>
-            `;
-            const backHTML = `
-                <div class="polaroid ${tiltB}">
-                    <div class="tape ${tapeClassB}"></div>
-                    <img src="${backPhoto.src}" alt="memory">
-                    <div class="polaroid-text">${backPhoto.cap}</div>
-                </div>
-            `;
-
-            book.appendChild(createPage(frontHTML, backHTML));
-        }
-
-        // ==========================================
-        // 3. ระบบ YouTube API ควบคุมเพลง
-        // ==========================================
+        // 4. ระบบ YouTube
         let player;
-        let isPlaying = false;
-        const musicText = document.getElementById('music-text');
-        const musicIcon = document.getElementById('music-icon');
-
-        // โหลด API YouTube
+        let isAudioPlaying = false;
+        
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         const firstScriptTag = document.getElementsByTagName('script')[0];
@@ -253,84 +246,27 @@
                 height: '0', width: '0', videoId: 'yWfO_hE81WQ',
                 playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'yWfO_hE81WQ' },
                 events: {
-                    'onReady': () => { musicText.innerText = "เปิดสมุดเพื่อเล่นเพลง"; }
+                    'onReady': () => {
+                        document.getElementById('m-text').innerText = "PLAY MUSIC ▶";
+                    }
                 }
             });
         }
 
-        function playMusic() {
-            if(player && player.playVideo) {
-                player.playVideo();
-                isPlaying = true;
-                musicText.innerText = "กำลังเล่นเพลง 🔊";
-            }
-        }
-
-        function toggleMusic() {
+        function toggleAudio() {
             if (!player || !player.getPlayerState) return;
             const state = player.getPlayerState();
             
             if (state === YT.PlayerState.PLAYING) {
                 player.pauseVideo();
-                isPlaying = false;
-                musicText.innerText = "ปิดเพลง 🔇";
-                musicIcon.innerText = "⏸️";
+                document.getElementById('m-text').innerText = "PLAY MUSIC ▶";
+                document.getElementById('m-icon').innerText = "🔇";
             } else {
                 player.playVideo();
-                isPlaying = true;
-                musicText.innerText = "กำลังเล่นเพลง 🔊";
-                musicIcon.innerText = "🎵";
+                document.getElementById('m-text').innerText = "PAUSE MUSIC ⏸";
+                document.getElementById('m-icon').innerText = "🔊";
             }
         }
-
-        // ==========================================
-        // 4. ลูกเล่นเสริม: พลุกระดาษตอนเปิดปก & ไอคอนลอยตามเมาส์
-        // ==========================================
-        function fireConfetti() {
-            const colors = ['#ffafcc', '#a2d2ff', '#fde2e4', '#f1c40f'];
-            for(let i=0; i<40; i++) {
-                const conf = document.createElement('div');
-                conf.classList.add('confetti');
-                conf.style.left = '50%'; conf.style.top = '50%';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
-                const angle = Math.random() * Math.PI * 2;
-                const velocity = 50 + Math.random() * 100;
-                const tx = Math.cos(angle) * velocity;
-                const ty = Math.sin(angle) * velocity - 100; // ลอยขึ้นนิดนึง
-                
-                conf.style.transition = 'all 1s cubic-bezier(0.1, 0.8, 0.3, 1)';
-                document.body.appendChild(conf);
-
-                setTimeout(() => {
-                    conf.style.transform = `translate(${tx}px, ${ty}px) rotate(${Math.random()*360}deg) scale(0)`;
-                    conf.style.opacity = '0';
-                }, 50);
-
-                setTimeout(() => conf.remove(), 1050);
-            }
-        }
-
-        // แตะพื้นที่ว่างให้มีดอกทานตะวันโผล่
-        document.body.addEventListener('click', (e) => {
-            if(e.target.closest('#book') || e.target.closest('#music-toggle')) return; // ยกเว้นตอนกดสมุดกับปุ่ม
-            const flower = document.createElement('div');
-            flower.innerText = ['🌻', '✨', '💖', '🌼'][Math.floor(Math.random()*4)];
-            flower.style.position = 'absolute';
-            flower.style.left = `${e.clientX - 10}px`;
-            flower.style.top = `${e.clientY - 10}px`;
-            flower.style.fontSize = '1.5rem';
-            flower.style.pointerEvents = 'none';
-            flower.style.animation = 'floatUp 1s ease-out forwards';
-            document.body.appendChild(flower);
-            setTimeout(() => flower.remove(), 1000);
-        });
-
-        // CSS สำหรับแอนิเมชันลอย
-        const style = document.createElement('style');
-        style.innerHTML = `@keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-50px) scale(1.5); opacity: 0; } }`;
-        document.head.appendChild(style);
-
     </script>
 </body>
 </html>
