@@ -1,36 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travel Booking</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.5 Years | Our Memories</title>
+    <style>
+        /* CSS กำหนดโทนสี All Black และ Layout */
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --accent-color: #555;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace; /* ฟอนต์สไตล์โค้ดดิงเท่ๆ */
+            overflow-x: hidden;
+        }
+
+        /* ส่วน Intro หน้าแรก */
+        .intro {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        /* Cursor กะพริบสำหรับเอฟเฟกต์พิมพ์ดีด */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 2.5rem;
+            background-color: var(--text-color);
+            animation: blink 1s step-end infinite;
+            vertical-align: bottom;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--accent-color);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUpIntro 1.5s ease forwards 2s; /* แสดงขึ้นมาหลังจากพิมพ์เสร็จ */
+        }
+
+        @keyframes fadeUpIntro {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ส่วน Gallery แกลเลอรีรูปภาพ */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        /* ลูกเล่น Hover รูปภาพ */
+        .card {
+            overflow: hidden;
+            border-radius: 4px;
+            /* ดรอปสีให้ดูเป็นโทนฟิล์มเข้มๆ */
+            filter: grayscale(60%) contrast(1.2); 
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .card:hover, .card:active {
+            filter: grayscale(0%) contrast(1);
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            aspect-ratio: 4/5;
+        }
+
+        /* Class สำหรับ Scroll Reveal */
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
 </head>
 <body>
-  <div id="app">
-    <h1>Travel Booking</h1>
-    <div id="auth-section">
-      <h2>Login</h2>
-      <input id="email" type="email" placeholder="Email">
-      <input id="password" type="password" placeholder="Password">
-      <button id="login-btn">Login</button>
-      <button id="signup-btn">Sign Up</button>
+
+    <!-- ซ่อนเพลงแบ็คกราวด์ไว้ (แนะนำแนว R&B หรือ Lo-fi) -->
+    <audio id="bg-music" loop>
+        <!-- เปลี่ยนชื่อไฟล์เพลงตรงนี้ -->
+        <source src="your-song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="intro">
+        <div>
+            <span id="typewriter"></span><span class="cursor"></span>
+        </div>
+        <p class="subtitle">Tap anywhere to start the vibe 🖤</p>
+        <div class="scroll-hint">Scroll Down ↓</div>
     </div>
-    <div id="search-section" style="display: none;">
-      <h2>Search for a Ticket</h2>
-      <input id="search" type="text" placeholder="Enter a city">
-      <button id="search-btn">Search</button>
-      <ul id="search-results"></ul>
-      <button id="logout-btn">Logout</button>
+
+    <div class="gallery">
+        <!-- เปลี่ยน URL รูปภาพใน src="" เป็นรูปลิงก์ของคุณเอง -->
+        <div class="card fade-up"><img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=600&auto=format&fit=crop" alt="Memory 1"></div>
+        <div class="card fade-up"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=600&auto=format&fit=crop" alt="Memory 2"></div>
+        <div class="card fade-up"><img src="https://images.unsplash.com/photo-1518182170546-076616fd4775?q=80&w=600&auto=format&fit=crop" alt="Memory 3"></div>
+        <div class="card fade-up"><img src="https://images.unsplash.com/photo-1557180295-76faa20b6f16?q=80&w=600&auto=format&fit=crop" alt="Memory 4"></div>
+        <!-- ก๊อปปี้บรรทัด <div class="card..."> เพิ่มได้เรื่อยๆ -->
     </div>
-    <div id="tickets-section" style="display: none;">
-      <h2>Your Tickets</h2>
-      <ul id="tickets-list"></ul>
-    </div>
-  </div>
-  <script src="app.js"></script>
+
+    <script>
+        // 1. ลูกเล่น Typewriter Effect (พิมพ์ข้อความ)
+        const text = "Happy 1.5 Years Anniversary.";
+        let i = 0;
+        // ตั้งความเร็วในการพิมพ์ (ยิ่งน้อยยิ่งเร็ว)
+        const speed = 70; 
+
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        // เริ่มพิมพ์เมื่อโหลดหน้าเว็บเสร็จ
+        window.onload = () => {
+            setTimeout(typeWriter, 500); // ดีเลย์ 0.5 วินาทีก่อนเริ่มพิมพ์
+        };
+
+        // 2. ลูกเล่นเล่นเพลงเมื่อแตะหน้าจอ (Easter Egg)
+        document.body.addEventListener('click', () => {
+            const audio = document.getElementById('bg-music');
+            if (audio.paused) {
+                audio.play();
+                document.querySelector('.subtitle').innerText = "Scrolling through memories...";
+            }
+        }, { once: true }); // ให้ทำงานแค่ครั้งเดียวตอนแตะครั้งแรก
+
+        // 3. ลูกเล่น Scroll Reveal (เฟดรูปขึ้นมาตอนเลื่อนหน้าจอ)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // ให้โชว์แล้วโชว์เลย ไม่ต้องเฟดใหม่
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
