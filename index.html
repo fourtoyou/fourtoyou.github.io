@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1.5 Years | Just with you 🌻</title>
+    <title>1.5 Years | Our Scrapbook 🌻</title>
     <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f7f9f9;
+            --bg-color: #f0f4f8;
             --text-color: #2c3e50;
-            --accent-yellow: #f1c40f;
-            --accent-blue: #3498db;
-            --accent-red: #ff6b6b;
+            --cover-color: #a2d2ff;
+            --paper-color: #fffcf8;
+            --accent-pink: #ffafcc;
+            --accent-yellow: #fde2e4;
         }
 
         body {
@@ -19,218 +20,317 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Mali', cursive;
-            overflow-x: hidden;
-            user-select: none;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden;
+            background-image: radial-gradient(#d1e8e2 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        #start-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: var(--accent-yellow);
+        /* --- ปุ่มควบคุมเพลง --- */
+        #music-toggle {
+            position: fixed; bottom: 20px; right: 20px;
+            background: white; border: 3px solid var(--text-color);
+            padding: 10px 20px; border-radius: 30px;
+            font-family: 'Mali', cursive; font-weight: bold; font-size: 1rem;
+            box-shadow: 4px 4px 0px var(--text-color);
+            cursor: pointer; z-index: 9999;
+            transition: transform 0.1s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        #music-toggle:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--text-color); }
+
+        /* --- โครงสร้างสมุด 3D --- */
+        .book-container {
+            position: relative;
+            width: 90vw; max-width: 420px; /* ขนาดเหมาะกับมือถือ */
+            height: 75vh; max-height: 600px;
+            perspective: 1500px;
+        }
+
+        .page {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            transform-origin: left center;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transform-style: preserve-3d;
+            border-radius: 5px 15px 15px 5px;
+            cursor: pointer;
+            box-shadow: inset 4px 0 10px rgba(0,0,0,0.1), 3px 3px 15px rgba(0,0,0,0.2);
+        }
+
+        /* สถานะตอนโดนพลิกหน้า */
+        .page.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        .front, .back {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 5px 15px 15px 5px;
+            background-color: var(--paper-color);
             display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 1000; cursor: pointer;
-            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.5s;
+            align-items: center; justify-content: center;
+            padding: 20px; box-sizing: border-box;
+            overflow: hidden;
         }
 
-        .bounce-emoji {
-            font-size: 5rem;
-            animation: bounce 0.8s infinite alternate;
+        .back {
+            transform: rotateY(180deg);
+            border-radius: 15px 5px 5px 15px; /* สลับมุมกระดาษด้านหลัง */
+            box-shadow: inset -4px 0 10px rgba(0,0,0,0.1);
         }
 
-        @keyframes bounce {
-            from { transform: translateY(0) scale(1); }
-            to { transform: translateY(-20px) scale(1.1); }
-        }
+        /* หน้าปกสมุด */
+        .cover { background-color: var(--cover-color); color: white; border: 2px solid var(--text-color); }
+        .cover .front { background-color: var(--cover-color); justify-content: center; }
+        .cover-title { font-size: 3.5rem; font-weight: 700; text-shadow: 3px 3px 0px var(--text-color); line-height: 1.2; text-align: center; }
+        .cover-subtitle { font-size: 1.2rem; margin-top: 10px; background: white; color: var(--text-color); padding: 5px 15px; border-radius: 20px; border: 2px solid var(--text-color); }
+        .tap-hint { position: absolute; bottom: 30px; font-size: 1rem; animation: bounce 1s infinite; }
 
-        .start-text {
-            font-size: 1.5rem; margin-top: 20px; font-weight: 700;
-            background: white; color: var(--text-color);
-            padding: 12px 30px; border-radius: 50px;
-            border: 3px solid var(--text-color);
-            box-shadow: 5px 5px 0px var(--text-color);
-            transition: all 0.1s;
-        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        .start-text:active {
-            transform: translate(3px, 3px);
-            box-shadow: 2px 2px 0px var(--text-color);
-        }
-
-        #main-gallery {
-            display: none;
-            padding: 60px 20px;
-            max-width: 1200px; /* ขยายให้กว้างขึ้นเพื่อรองรับรูปเยอะๆ */
-            margin: 0 auto;
-            text-align: center;
-            opacity: 0;
-            animation: fadeIn 1s forwards 0.3s;
-        }
-
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        .gallery-header {
-            font-size: 3rem; font-weight: 700;
-            margin-bottom: 5px; position: relative;
-            display: inline-block;
-        }
-
-        .gallery-header::after {
-            content: ''; position: absolute;
-            bottom: 8px; left: -5%; width: 110%; height: 20px;
-            background-color: var(--accent-blue);
-            z-index: -1; border-radius: 10px; transform: rotate(-1deg);
-            opacity: 0.5;
-        }
-
-        .gallery-subtitle {
-            font-size: 1.3rem; color: #555;
-            margin-bottom: 60px; font-weight: 600;
-        }
-
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 30px;
-        }
-
-        .photo-card {
-            background: white; padding: 15px 15px 20px 15px;
-            border-radius: 20px; border: 3px solid var(--text-color);
-            box-shadow: 6px 6px 0px var(--text-color);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 0; transform: translateY(40px);
+        /* สไตล์กรอบรูปโพลารอยด์ในหน้ากระดาษ */
+        .polaroid {
+            background: white; padding: 10px 10px 25px 10px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            width: 85%; transform: rotate(-2deg);
             position: relative;
         }
+        .polaroid.right-tilt { transform: rotate(2deg); }
+        
+        .polaroid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid #eee; }
+        .polaroid-text { margin-top: 15px; font-size: 1.2rem; font-weight: bold; text-align: center; color: var(--text-color); }
 
-        .photo-card.show {
-            opacity: 1; transform: translateY(0);
-        }
-
-        .photo-card:hover {
-            transform: translateY(-10px) rotate(3deg);
+        /* สก็อตเทปตกแต่ง */
+        .tape {
+            position: absolute; top: -12px; left: 50%;
+            transform: translateX(-50%) rotate(-3deg);
+            width: 80px; height: 30px;
+            background-color: rgba(255, 175, 204, 0.7);
             z-index: 5;
         }
-        
-        .photo-card:nth-child(even):hover {
-            transform: translateY(-10px) rotate(-3deg);
-        }
+        .tape-blue { background-color: rgba(162, 210, 255, 0.7); transform: translateX(-50%) rotate(2deg); }
 
-        .tape {
-            position: absolute; top: -15px; left: 50%;
-            transform: translateX(-50%) rotate(-2deg);
-            width: 80px; height: 30px;
-            background-color: rgba(255, 107, 107, 0.6);
-            z-index: 10;
-        }
-        
-        .photo-card:nth-child(even) .tape {
-            background-color: rgba(52, 152, 219, 0.6);
-            transform: translateX(-50%) rotate(3deg);
-        }
-        
-        .photo-card:nth-child(3n) .tape {
-            background-color: rgba(241, 196, 15, 0.6); /* เพิ่มสก็อตเทปสีเหลืองใสให้ดูมีสีสันขึ้น */
-        }
+        /* เอฟเฟกต์พลุกระดาษตอนเปิดเล่ม */
+        .confetti { position: absolute; width: 10px; height: 10px; background-color: #f00; z-index: 9999; pointer-events: none; border-radius: 50%; }
 
-        .img-wrap {
-            width: 100%; aspect-ratio: 1/1;
-            overflow: hidden; border-radius: 12px;
-            border: 2px solid var(--text-color);
-            background-color: #eee; /* สีพื้นหลังเผื่อรูปโหลดไม่ทัน */
-        }
-
-        .img-wrap img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
-        .caption {
-            margin-top: 15px; font-size: 1.1rem;
-            font-weight: 700; color: var(--text-color);
-        }
-
-        #youtube-player { display: none; }
+        /* YouTube ซ่อน */
+        #yt-player { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="start-screen" onclick="startVibe()">
-        <div class="bounce-emoji">🐶</div>
-        <div class="start-text">จิ้มเพื่อเปิดดูเลย! 👆</div>
+    <div class="book-container" id="book">
+        <!-- หน้าสมุดจะถูกสร้างด้วย JavaScript อัตโนมัติ -->
     </div>
 
-    <main id="main-gallery">
-        <div class="gallery-header">Happy 1.5 Years! 🎉</div>
-        <div class="gallery-subtitle">แค่อยู่กับเธอไปเรื่อยๆ 🌻</div>
-        
-        <div class="photo-grid">
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1.jpg" alt="pic"></div><div class="caption">💖</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="2.jpg" alt="pic"></div><div class="caption">😜</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="3.jpg" alt="pic"></div><div class="caption">เงาเท่ๆ 😎</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="4.jpg" alt="pic"></div><div class="caption">✨</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="5.jpg" alt="pic"></div><div class="caption">👀</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="6.jpg" alt="pic"></div><div class="caption">✌️</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="7.jpg" alt="pic"></div><div class="caption">🌻</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="8.jpg" alt="pic"></div><div class="caption">😝</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="9.jpg" alt="pic"></div><div class="caption">🫶</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="10.jpg" alt="pic"></div><div class="caption">🌊</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="11.jpg" alt="pic"></div><div class="caption">สดใสสุดๆ ☀️</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="12.jpg" alt="pic"></div><div class="caption">🏖️</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="13.jpg" alt="pic"></div><div class="caption">🌟</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="14.jpg" alt="pic"></div><div class="caption">📷</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="15.jpg" alt="pic"></div><div class="caption">😋</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="16.jpg" alt="pic"></div><div class="caption">👟</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="17.jpg" alt="pic"></div><div class="caption">🌱</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="18.jpg" alt="pic"></div><div class="caption">เดินเล่น 🚶‍♀️</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="19.jpg" alt="pic"></div><div class="caption">😆</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="20.jpg" alt="pic"></div><div class="caption">หมั่นเขี้ยว! 🤏</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="21.jpg" alt="pic"></div><div class="caption">🍦</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="22.jpg" alt="pic"></div><div class="caption">🥰</div></div>
+    <!-- ปุ่มควบคุมเพลง -->
+    <div id="music-toggle" onclick="toggleMusic()">
+        <span id="music-icon">🎵</span> <span id="music-text">กำลังโหลดเพลง...</span>
+    </div>
 
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1592_0.jpg" alt="pic"></div><div class="caption">เจ้าตูบ 🐕</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1593_0.jpg" alt="pic"></div><div class="caption">🐾</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1603_0.jpg" alt="pic"></div><div class="caption">เผลอๆ 📸</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="1604_0.jpg" alt="pic"></div><div class="caption">ลมเย็นๆ 🌬️</div></div>
-
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_1.jpg" alt="pic"></div><div class="caption">🌸</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_2.jpg" alt="pic"></div><div class="caption">🥤</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_3.jpg" alt="pic"></div><div class="caption">🌺</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_4.jpg" alt="pic"></div><div class="caption">ธรรมชาติ 🌿</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_5.jpg" alt="pic"></div><div class="caption">🌷</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_6.jpg" alt="pic"></div><div class="caption">คูลๆ 😎</div></div>
-            <div class="photo-card"><div class="tape"></div><div class="img-wrap"><img src="LINE_ALBUM_with u_260601_7.jpg" alt="pic"></div><div class="caption">ยิ้มหวาน 😊</div></div>
-        </div>
-    </main>
-
-    <div id="youtube-player"></div>
+    <!-- YouTube API -->
+    <div id="yt-player"></div>
 
     <script>
-        let isStarted = false;
+        // ==========================================
+        // 1. ฐานข้อมูลรูปภาพทั้ง 33 รูป
+        // ==========================================
+        const photos = [
+            { src: '1.jpg', cap: '💖' }, { src: '2.jpg', cap: '😜' }, { src: '3.jpg', cap: 'เงาเท่ๆ 😎' },
+            { src: '4.jpg', cap: '✨' }, { src: '5.jpg', cap: '👀' }, { src: '6.jpg', cap: '✌️' },
+            { src: '7.jpg', cap: '🌻' }, { src: '8.jpg', cap: '😝' }, { src: '9.jpg', cap: '🫶' },
+            { src: '10.jpg', cap: '🌊' }, { src: '11.jpg', cap: 'สดใสสุดๆ ☀️' }, { src: '12.jpg', cap: '🏖️' },
+            { src: '13.jpg', cap: '🌟' }, { src: '14.jpg', cap: '📷' }, { src: '15.jpg', cap: '😋' },
+            { src: '16.jpg', cap: '👟' }, { src: '17.jpg', cap: '🌱' }, { src: '18.jpg', cap: 'เดินเล่น 🚶‍♀️' },
+            { src: '19.jpg', cap: '😆' }, { src: '20.jpg', cap: 'หมั่นเขี้ยว! 🤏' }, { src: '21.jpg', cap: '🍦' },
+            { src: '22.jpg', cap: '🥰' },
+            { src: '1592_0.jpg', cap: 'เจ้าตูบ 🐕' }, { src: '1593_0.jpg', cap: '🐾' },
+            { src: '1603_0.jpg', cap: 'เผลอๆ 📸' }, { src: '1604_0.jpg', cap: 'ลมเย็นๆ 🌬️' },
+            { src: 'LINE_ALBUM_with u_260601_1.jpg', cap: '🌸' }, { src: 'LINE_ALBUM_with u_260601_2.jpg', cap: '🥤' },
+            { src: 'LINE_ALBUM_with u_260601_3.jpg', cap: '🌺' }, { src: 'LINE_ALBUM_with u_260601_4.jpg', cap: 'ธรรมชาติ 🌿' },
+            { src: 'LINE_ALBUM_with u_260601_5.jpg', cap: '🌷' }, { src: 'LINE_ALBUM_with u_260601_6.jpg', cap: 'คูลๆ 😎' },
+            { src: 'LINE_ALBUM_with u_260601_7.jpg', cap: 'ยิ้มหวาน 😊' }
+        ];
 
-        function startVibe() {
-            if (isStarted) return;
-            isStarted = true;
+        // ==========================================
+        // 2. ระบบสร้างหน้ากระดาษสมุด
+        // ==========================================
+        const book = document.getElementById('book');
+        let zIndexCounter = 100; // จัดการลำดับชั้นกระดาษ
 
-            const ytContainer = document.getElementById('youtube-player');
-            ytContainer.innerHTML = '<iframe width="0" height="0" src="https://www.youtube.com/embed/yWfO_hE81WQ?autoplay=1&loop=1&playlist=yWfO_hE81WQ" frameborder="0" allow="autoplay; encrypted-media"></iframe>';
+        function createPage(frontContent, backContent, isCover = false) {
+            const page = document.createElement('div');
+            page.classList.add('page');
+            if(isCover) page.classList.add('cover');
+            page.style.zIndex = zIndexCounter--;
+            
+            // ซ้อนหน้ากระดาษให้เหลื่อมกันนิดๆ ดูเป็นธรรมชาติ
+            page.style.top = `${Math.random() * 4 - 2}px`;
 
-            const startScreen = document.getElementById('start-screen');
-            startScreen.style.transform = 'translateY(-100vh)';
-            startScreen.style.opacity = '0';
+            page.innerHTML = `
+                <div class="front">${frontContent}</div>
+                <div class="back">${backContent}</div>
+            `;
 
-            setTimeout(() => {
-                startScreen.style.display = 'none';
-                const gallery = document.getElementById('main-gallery');
-                gallery.style.display = 'block';
+            // ระบบคลิกพลิกหน้า
+            page.addEventListener('click', function() {
+                if (page.classList.contains('flipped')) {
+                    // พลิกกลับ (ปิด)
+                    page.classList.remove('flipped');
+                    page.style.zIndex = zIndexCounter++;
+                } else {
+                    // พลิกไปข้างหน้า (เปิด)
+                    page.classList.add('flipped');
+                    page.style.zIndex = -zIndexCounter; // ย้ายไปอยู่หลังสุด
+                    
+                    // ถ้าเปิดหน้าปกครั้งแรก ให้เริ่มเล่นเพลง & ยิงพลุ
+                    if(isCover && !isPlaying) {
+                        playMusic();
+                        fireConfetti();
+                    }
+                }
+            });
 
-                const cards = document.querySelectorAll('.photo-card');
-                cards.forEach((card, index) => {
-                    setTimeout(() => {
-                        card.classList.add('show');
-                    }, 300 + (index * 80)); /* ปรับความเร็วการเด้งโชว์ให้ไวขึ้นเพราะรูปเยอะ */
-                });
-            }, 700);
+            return page;
         }
+
+        // --- สร้างหน้าปก ---
+        const coverFront = `
+            <div class="cover-title">1.5 YRS</div>
+            <div class="cover-subtitle">แค่อยู่กับเธอไปเรื่อยๆ 🌻</div>
+            <div class="tap-hint">👆 แตะเพื่อเปิดสมุด</div>
+        `;
+        const coverBack = `<h2 style="color: var(--text-color);">ความทรงจำของเรา 💖</h2>`;
+        book.appendChild(createPage(coverFront, coverBack, true));
+
+        // --- สร้างหน้าด้านใน (เอารูปมาจับคู่ หน้า-หลัง) ---
+        for (let i = 0; i < photos.length; i += 2) {
+            const frontPhoto = photos[i];
+            const backPhoto = photos[i+1] || { src: '1.jpg', cap: 'The End 💖' }; // ถ้ารูปคี่ ให้รูปสุดท้ายปิดท้าย
+
+            const tapeClassF = i % 3 === 0 ? 'tape-blue' : '';
+            const tapeClassB = (i+1) % 3 === 0 ? 'tape-blue' : '';
+            const tiltF = i % 2 === 0 ? 'right-tilt' : '';
+            const tiltB = i % 2 !== 0 ? 'right-tilt' : '';
+
+            const frontHTML = `
+                <div class="polaroid ${tiltF}">
+                    <div class="tape ${tapeClassF}"></div>
+                    <img src="${frontPhoto.src}" alt="memory">
+                    <div class="polaroid-text">${frontPhoto.cap}</div>
+                </div>
+            `;
+            const backHTML = `
+                <div class="polaroid ${tiltB}">
+                    <div class="tape ${tapeClassB}"></div>
+                    <img src="${backPhoto.src}" alt="memory">
+                    <div class="polaroid-text">${backPhoto.cap}</div>
+                </div>
+            `;
+
+            book.appendChild(createPage(frontHTML, backHTML));
+        }
+
+        // ==========================================
+        // 3. ระบบ YouTube API ควบคุมเพลง
+        // ==========================================
+        let player;
+        let isPlaying = false;
+        const musicText = document.getElementById('music-text');
+        const musicIcon = document.getElementById('music-icon');
+
+        // โหลด API YouTube
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player', {
+                height: '0', width: '0', videoId: 'yWfO_hE81WQ',
+                playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'yWfO_hE81WQ' },
+                events: {
+                    'onReady': () => { musicText.innerText = "เปิดสมุดเพื่อเล่นเพลง"; }
+                }
+            });
+        }
+
+        function playMusic() {
+            if(player && player.playVideo) {
+                player.playVideo();
+                isPlaying = true;
+                musicText.innerText = "กำลังเล่นเพลง 🔊";
+            }
+        }
+
+        function toggleMusic() {
+            if (!player || !player.getPlayerState) return;
+            const state = player.getPlayerState();
+            
+            if (state === YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+                isPlaying = false;
+                musicText.innerText = "ปิดเพลง 🔇";
+                musicIcon.innerText = "⏸️";
+            } else {
+                player.playVideo();
+                isPlaying = true;
+                musicText.innerText = "กำลังเล่นเพลง 🔊";
+                musicIcon.innerText = "🎵";
+            }
+        }
+
+        // ==========================================
+        // 4. ลูกเล่นเสริม: พลุกระดาษตอนเปิดปก & ไอคอนลอยตามเมาส์
+        // ==========================================
+        function fireConfetti() {
+            const colors = ['#ffafcc', '#a2d2ff', '#fde2e4', '#f1c40f'];
+            for(let i=0; i<40; i++) {
+                const conf = document.createElement('div');
+                conf.classList.add('confetti');
+                conf.style.left = '50%'; conf.style.top = '50%';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 50 + Math.random() * 100;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity - 100; // ลอยขึ้นนิดนึง
+                
+                conf.style.transition = 'all 1s cubic-bezier(0.1, 0.8, 0.3, 1)';
+                document.body.appendChild(conf);
+
+                setTimeout(() => {
+                    conf.style.transform = `translate(${tx}px, ${ty}px) rotate(${Math.random()*360}deg) scale(0)`;
+                    conf.style.opacity = '0';
+                }, 50);
+
+                setTimeout(() => conf.remove(), 1050);
+            }
+        }
+
+        // แตะพื้นที่ว่างให้มีดอกทานตะวันโผล่
+        document.body.addEventListener('click', (e) => {
+            if(e.target.closest('#book') || e.target.closest('#music-toggle')) return; // ยกเว้นตอนกดสมุดกับปุ่ม
+            const flower = document.createElement('div');
+            flower.innerText = ['🌻', '✨', '💖', '🌼'][Math.floor(Math.random()*4)];
+            flower.style.position = 'absolute';
+            flower.style.left = `${e.clientX - 10}px`;
+            flower.style.top = `${e.clientY - 10}px`;
+            flower.style.fontSize = '1.5rem';
+            flower.style.pointerEvents = 'none';
+            flower.style.animation = 'floatUp 1s ease-out forwards';
+            document.body.appendChild(flower);
+            setTimeout(() => flower.remove(), 1000);
+        });
+
+        // CSS สำหรับแอนิเมชันลอย
+        const style = document.createElement('style');
+        style.innerHTML = `@keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-50px) scale(1.5); opacity: 0; } }`;
+        document.head.appendChild(style);
+
     </script>
 </body>
 </html>
