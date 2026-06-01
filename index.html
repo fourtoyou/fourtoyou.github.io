@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>1.5 Years | Our Sweet Scrapbook 💖</title>
+    <title>1.6 Years | Our Sweet Scrapbook 💖</title>
     <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -56,7 +56,7 @@
             display: flex;
             width: 100%; height: 100%;
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: transform; /* สั่งให้การ์ดจอเตรียมความลื่นไว้ล่วงหน้า */
+            will-change: transform;
         }
 
         .spread {
@@ -72,7 +72,7 @@
             justify-content: center; align-items: center;
             padding: 30px; position: relative;
             background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
-            background-size: 100% 25px; /* ลายเส้นสมุดบันทึกเบาๆ */
+            background-size: 100% 25px;
         }
 
         .page-left { border-right: 1px solid rgba(0,0,0,0.05); }
@@ -156,7 +156,7 @@
         <div class="slider-track" id="track">
             
             <div class="spread cover-spread">
-                <div class="cover-title">1.5 YEARS</div>
+                <div class="cover-title">1.6 YEARS</div>
                 <div class="cover-tag">Our Memories ✨</div>
                 <p style="margin-top: 30px; font-weight: bold; color: white;">กดปุ่มด้านล่างเพื่อเปิดอ่านนะ</p>
             </div>
@@ -182,7 +182,6 @@
     <div id="yt-player" style="display: none;"></div>
 
     <script>
-        // ฐานข้อมูลรูปภาพทั้งหมด 33 รูปของคุณ
         const photos = [
             { src: '1.jpg', cap: '💖' }, { src: '2.jpg', cap: '😜' }, { src: '3.jpg', cap: 'เงาเท่ๆ 😎' },
             { src: '4.jpg', cap: '✨' }, { src: '5.jpg', cap: '👀' }, { src: '6.jpg', cap: '✌️' },
@@ -200,7 +199,6 @@
             { src: 'LINE_ALBUM_with u_260601_7.jpg', cap: 'ยิ้มหวาน 😊' }
         ];
 
-        // ระบบจับคู่รูปใส่หน้าซ้าย-ขวาลงในสไลด์ track
         const container = document.getElementById('dynamic-spreads');
         for (let i = 0; i < photos.length; i += 2) {
             const leftData = photos[i];
@@ -216,7 +214,7 @@
                 <div class="page-left">
                     <div class="polaroid" style="--r: ${rotL}">
                         <div class="tape"></div>
-                        <div class="img-box"><img src="${leftData.src}"></div>
+                        <div class="img-box"><img src="${leftData.src}" onerror="this.src='https://via.placeholder.com/400?text=กำลังโหลดรูป...'"></div>
                         <div class="caption">${leftData.cap}</div>
                     </div>
                 </div>
@@ -228,13 +226,12 @@
                     <div class="page-right">
                         <div class="polaroid" style="--r: ${rotR}">
                             <div class="tape"></div>
-                            <div class="img-box"><img src="${rightData.src}"></div>
+                            <div class="img-box"><img src="${rightData.src}" onerror="this.src='https://via.placeholder.com/400?text=กำลังโหลดรูป...'"></div>
                             <div class="caption">${rightData.cap}</div>
                         </div>
                     </div>
                 `;
             } else {
-                // ถ้ารูปเป็นเศษคี่ ให้หน้าขวาโชว์กล่องข้อความปิดท้ายแทนรูปที่หายไป
                 rightHTML = `
                     <div class="page-right">
                         <h3 style="color: var(--rose-gold)">Memories Card 🌸</h3>
@@ -246,7 +243,6 @@
             container.appendChild(spreadDiv);
         }
 
-        // --- ระบบควบคุมสไลด์ลื่นๆ ---
         let currentIdx = 0;
         const track = document.getElementById('track');
         const totalSlides = document.querySelectorAll('.spread').length;
@@ -257,12 +253,10 @@
             if (currentIdx < 0) currentIdx = 0;
             if (currentIdx >= totalSlides) currentIdx = totalSlides - 1;
 
-            // ใช้ translate3d เพื่อบังคับให้การ์ดจอคอม/มือถือ เร่งความเร็วแบบฮาร์ดแวร์ (ไม่มีการกระตุก)
             track.style.transform = `translate3d(-${currentIdx * 100}%, 0, 0)`;
             indicator.innerText = `${currentIdx + 1} / ${totalSlides}`;
         }
 
-        // --- ระบบเพลง YouTube API ---
         let player;
         let isMusicPlaying = false;
         const mText = document.getElementById('m-text');
