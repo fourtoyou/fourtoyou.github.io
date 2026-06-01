@@ -1,297 +1,543 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>1.6 Years | Our Sweet Scrapbook 💖</title>
-    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>1.6 YEARS // WITH YOU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --sweet-pink: #ffe5ec;
-            --pink-accent: #ffb3c6;
-            --rose-gold: #ff85a1;
-            --paper-white: #fffdfa;
-            --text-color: #4a3b32;
+            --blush:    #f5d6d6;
+            --rose:     #e8a0a0;
+            --deep-rose:#c26b6b;
+            --cream:    #fdf6f0;
+            --warm-bg:  #1a1210;
+            --card-warm:#251915;
+            --gold:     #d4a574;
+            --gold-pale:#f0dcc8;
+            --text-main:#fff5ef;
+            --text-mute:#9e7e74;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--sweet-pink);
-            background-image: radial-gradient(#ffcad4 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
-            font-family: 'Mali', cursive;
-            color: var(--text-color);
+            background-color: var(--warm-bg);
+            color: var(--text-main);
+            font-family: 'DM Sans', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ---- Custom cursor ---- */
+        #cursor-dot {
+            position: fixed; width: 8px; height: 8px;
+            background: var(--gold); border-radius: 50%;
+            pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+        }
+        #cursor-ring {
+            position: fixed; width: 36px; height: 36px;
+            border: 1px solid rgba(212,165,116,0.5);
+            border-radius: 50%; pointer-events: none; z-index: 99998;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease, border-color 0.3s;
+        }
+        .cursor-expand #cursor-ring { width: 60px; height: 60px; border-color: var(--rose); }
+
+        /* ---- Particle canvas ---- */
+        #particle-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0; pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* ---- INTRO / Boot ---- */
+        #intro-screen {
+            position: fixed; inset: 0;
+            background: var(--warm-bg);
+            z-index: 9000;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            height: 100vh; overflow: hidden;
-            user-select: none;
+            transition: opacity 1.4s ease, transform 1.4s cubic-bezier(0.16,1,0.3,1);
         }
 
-        /* --- กรอบสมุดเปิดกาง (Scrapbook Display) --- */
-        .notebook-container {
-            position: relative;
-            width: 95vw; max-width: 900px;
-            height: 70vh; max-height: 580px;
-            background: var(--paper-white);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(255, 133, 161, 0.25), 
-                        inset 0 0 0 8px rgba(255, 255, 255, 0.5);
-            border: 3px solid #fff;
-            display: flex;
-            overflow: hidden;
-        }
-
-        /* สันห่วงตรงกลางสมุด เพื่อความสมจริง */
-        .notebook-container::after {
-            content: "";
-            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 30px; height: 100%;
-            background: linear-gradient(to right, rgba(0,0,0,0.05), rgba(0,0,0,0.1) 30%, transparent 50%, rgba(0,0,0,0.1) 70%, rgba(0,0,0,0.05));
-            z-index: 10; pointer-events: none;
-        }
-
-        /* --- ระบบ Slider ลื่นๆ ขับด้วย GPU --- */
-        .slider-track {
-            display: flex;
-            width: 100%; height: 100%;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: transform;
-        }
-
-        .spread {
-            min-width: 100%; height: 100%;
-            display: flex;
-            position: relative;
-        }
-
-        /* แบ่งหน้าซ้าย-ขวา */
-        .page-left, .page-right {
-            flex: 1; height: 100%;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            padding: 30px; position: relative;
-            background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
-            background-size: 100% 25px;
-        }
-
-        .page-left { border-right: 1px solid rgba(0,0,0,0.05); }
-
-        /* หน้าปกแรกแบบหวานๆ */
-        .cover-spread {
-            background: linear-gradient(135deg, #ffe5ec 0%, #ffcad4 100%);
-            justify-content: center; align-items: center; flex-direction: column;
+        .intro-inner {
             text-align: center;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 0;
         }
-        .cover-title { font-size: 3.8rem; color: #fff; font-weight: 700; text-shadow: 3px 3px 0 var(--rose-gold); }
-        .cover-tag { font-size: 1.3rem; margin-top: 15px; background: #fff; color: var(--rose-gold); padding: 5px 20px; border-radius: 20px; font-weight: bold; }
 
-        /* --- กรอบโพลารอยด์เซ็ตหวาน --- */
-        .polaroid {
-            background: #fff;
-            padding: 12px 12px 25px 12px;
-            box-shadow: 0 10px 25px rgba(255, 182, 193, 0.4);
-            border-radius: 4px;
-            width: 85%; max-width: 280px;
-            transform: rotate(calc(var(--r) * 1deg));
-            transition: transform 0.3s;
+        .intro-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem; letter-spacing: 0.25em;
+            color: var(--gold); text-transform: uppercase;
+            opacity: 0; transform: translateY(10px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            margin-bottom: 18px;
+        }
+
+        .intro-big {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(4.5rem, 14vw, 9rem);
+            font-weight: 300; line-height: 0.9;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 1s ease 0.2s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.2s;
+        }
+
+        .intro-big em {
+            font-style: italic;
+            background: linear-gradient(135deg, var(--blush) 0%, var(--gold) 50%, var(--rose) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .intro-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic; font-size: 1.2rem;
+            color: var(--text-mute); letter-spacing: 0.05em;
+            margin-top: 24px; margin-bottom: 56px;
+            opacity: 0; transform: translateY(10px);
+            transition: opacity 0.8s ease 0.6s, transform 0.8s ease 0.6s;
+        }
+
+        .enter-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem; letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--warm-bg); background: var(--gold-pale);
+            border: none; padding: 16px 48px;
+            cursor: none; border-radius: 100px;
+            opacity: 0; transform: translateY(12px) scale(0.95);
+            transition: opacity 0.8s ease 0.9s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.9s, background 0.3s, color 0.3s;
+        }
+        .enter-btn:hover {
+            background: var(--gold);
+            transform: translateY(0) scale(1.03) !important;
+        }
+
+        .boot-lines {
+            margin-top: 40px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem; color: var(--text-mute);
+            letter-spacing: 0.1em; text-align: left;
+            width: 260px;
+        }
+        .boot-line { opacity: 0; transition: opacity 0.4s ease; margin-bottom: 4px; }
+
+        /* ---- Reveal classes ---- */
+        .reveal { opacity: 1 !important; transform: translateY(0) scale(1) !important; }
+
+        /* ---- Main content ---- */
+        #main-content {
+            position: relative; z-index: 1;
+            opacity: 0; display: none;
+            transition: opacity 1.2s ease;
+            padding-bottom: 120px;
+        }
+
+        /* ---- Hero header ---- */
+        .site-header {
+            padding: 80px 40px 0;
+            max-width: 1200px; margin: 0 auto;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .header-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem; letter-spacing: 0.25em;
+            color: var(--gold); text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(5rem, 15vw, 10rem);
+            font-weight: 300; line-height: 0.85;
+            text-align: center; letter-spacing: -0.03em;
+        }
+        .header-title span {
+            display: block;
+        }
+        .header-title .italic-line {
+            font-style: italic;
+            background: linear-gradient(135deg, var(--blush), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-divider {
+            width: 1px; height: 80px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            margin: 40px auto;
+        }
+
+        .header-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic; font-size: 1.35rem;
+            color: var(--text-mute); letter-spacing: 0.04em;
+            text-align: center; margin-bottom: 100px;
+        }
+
+        /* ---- Gallery ---- */
+        .gallery-section {
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .gallery-grid {
+            columns: 3; column-gap: 20px;
+        }
+        @media (max-width: 800px) { .gallery-grid { columns: 2; } }
+        @media (max-width: 480px) { .gallery-grid { columns: 1; } }
+
+        /* ---- Photo card ---- */
+        .photo-card {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            position: relative;
+            cursor: none;
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.9s ease-out, transform 0.9s cubic-bezier(0.16,1,0.3,1);
+        }
+        .photo-card.visible { opacity: 1; transform: translateY(0); }
+
+        .card-img-wrap {
+            border-radius: 16px;
+            overflow: hidden;
             position: relative;
         }
-        .polaroid:hover { transform: scale(1.05) rotate(0deg); }
-
-        .img-box { width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 4px; background: #fff5f5; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .caption { margin-top: 15px; font-size: 1.2rem; font-weight: bold; text-align: center; color: var(--text-color); }
-
-        /* สก็อตเทปโบว์หวานๆ */
-        .tape {
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-2deg);
-            width: 85px; height: 28px;
-            background: rgba(255, 179, 198, 0.6);
-            backdrop-filter: blur(1px);
-            border-radius: 2px;
+        .card-img-wrap img {
+            width: 100%; display: block;
+            filter: saturate(0.75) brightness(0.9) sepia(0.12);
+            transition: filter 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+        }
+        .photo-card:hover .card-img-wrap img {
+            filter: saturate(1.1) brightness(1.05) sepia(0.05);
+            transform: scale(1.04);
         }
 
-        /* --- ปุ่มนำทาง แตะง่ายไม่วุ่นวาย --- */
-        .nav-controls { display: flex; gap: 30px; margin-top: 25px; align-items: center; }
-        
-        .nav-btn {
-            background: #fff; border: none;
-            width: 50px; height: 50px; border-radius: 50%;
-            box-shadow: 0 8px 15px rgba(255, 133, 161, 0.2);
-            font-size: 1.2rem; cursor: pointer; display: flex;
-            justify-content: center; align-items: center;
-            transition: all 0.2s; color: var(--rose-gold);
+        /* film grain overlay */
+        .card-img-wrap::after {
+            content: "";
+            position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none; mix-blend-mode: overlay; opacity: 0.5;
+            border-radius: inherit;
         }
-        .nav-btn:active { transform: scale(0.9); }
-        .page-num { font-size: 1.1rem; font-weight: bold; color: var(--rose-gold); }
 
-        /* ปุ่มคุมเพลงสไตล์มินิมอล */
+        /* hover shine overlay */
+        .card-img-wrap::before {
+            content: "";
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at var(--mx,50%) var(--my,50%), rgba(255,220,180,0.12) 0%, transparent 65%);
+            pointer-events: none; opacity: 0;
+            transition: opacity 0.4s; z-index: 2;
+            border-radius: inherit;
+        }
+        .photo-card:hover .card-img-wrap::before { opacity: 1; }
+
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 4px 4px;
+        }
+        .card-index {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem; color: var(--text-mute); letter-spacing: 0.1em;
+        }
+        .card-emoji { font-size: 1.1rem; line-height: 1; }
+
+        /* ---- Footer ---- */
+        .site-footer {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative; z-index: 1;
+        }
+        .footer-heart {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic; font-size: 1.5rem;
+            color: var(--text-mute); letter-spacing: 0.05em;
+        }
+        .footer-heart span { color: var(--rose); font-style: normal; }
+
+        /* ---- Music btn ---- */
         #music-btn {
-            position: fixed; bottom: 20px; right: 20px;
-            background: #fff; border: 2px solid var(--pink-accent);
-            padding: 10px 20px; border-radius: 30px;
-            font-family: inherit; font-weight: bold; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            display: flex; align-items: center; gap: 8px; z-index: 100;
-            color: var(--text-color);
+            position: fixed; bottom: 32px; right: 32px;
+            z-index: 9999; display: none;
+            width: 56px; height: 56px;
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.35);
+            backdrop-filter: blur(12px);
+            border-radius: 50%;
+            cursor: none; color: var(--gold);
+            font-size: 1.3rem; line-height: 1;
+            transition: background 0.3s, transform 0.3s;
+            align-items: center; justify-content: center;
+        }
+        #music-btn:hover { background: rgba(212,165,116,0.3); transform: scale(1.1); }
+        #music-btn.playing { animation: pulse-ring 2s ease-in-out infinite; }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(212,165,116,0.3); }
+            50% { box-shadow: 0 0 0 12px rgba(212,165,116,0); }
+            100% { box-shadow: 0 0 0 0 rgba(212,165,116,0); }
         }
 
-        /* รองรับหน้าจอมือถือแนวตั้งให้ซ้อนกันสวยๆ */
+        /* ---- Floating petals ---- */
+        .petal {
+            position: fixed; pointer-events: none; z-index: 5;
+            width: 6px; height: 6px;
+            background: var(--blush); border-radius: 100% 0 100% 0;
+            opacity: 0; animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
         @media (max-width: 600px) {
-            .notebook-container { height: 75vh; }
-            .spread { flex-direction: column; }
-            .page-left, .page-right { padding: 15px; }
-            .page-left { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.05); }
-            .notebook-container::after { display: none; }
-            .polaroid { max-width: 200px; padding-bottom: 15px; }
-            .cover-title { font-size: 2.5rem; }
+            .site-header { padding: 60px 24px 0; }
+            #music-btn { bottom: 20px; right: 20px; width: 48px; height: 48px; font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="notebook-container">
-        <div class="slider-track" id="track">
-            
-            <div class="spread cover-spread">
-                <div class="cover-title">1.6 YEARS</div>
-                <div class="cover-tag">Our Memories ✨</div>
-                <p style="margin-top: 30px; font-weight: bold; color: white;">กดปุ่มด้านล่างเพื่อเปิดอ่านนะ</p>
-            </div>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<canvas id="particle-canvas"></canvas>
 
-            <div id="dynamic-spreads" style="display: contents;"></div>
-
-            <div class="spread cover-spread" style="background: linear-gradient(135deg, #ffcad4 0%, #ff85a1 100%);">
-                <div class="cover-title" style="font-size: 3rem;">อยู่ด้วยกันไปนานๆ นะ ❤️</div>
-            </div>
-
+<!-- INTRO -->
+<div id="intro-screen">
+    <div class="intro-inner">
+        <p class="intro-eyebrow" id="ie">memory vault — loading</p>
+        <h1 class="intro-big" id="ib">1.6<br><em>Years</em></h1>
+        <p class="intro-tagline" id="it">every frame saved, nothing forgotten</p>
+        <button class="enter-btn" id="enter-btn" onclick="unlockVault()">Open the vault</button>
+        <div class="boot-lines" id="boot-lines">
+            <div class="boot-line" id="bl0">&gt; connecting to memory server...</div>
+            <div class="boot-line" id="bl1">&gt; decrypting 1.6 years of data...</div>
+            <div class="boot-line" id="bl2">&gt; 34 fragments found. loading...</div>
+            <div class="boot-line" id="bl3">&gt; all systems ready ✓</div>
         </div>
     </div>
+</div>
 
-    <div class="nav-controls">
-        <button class="nav-btn" onclick="moveSlide(-1)">◀</button>
-        <div class="page-num" id="page-indicator">1 / 18</div>
-        <button class="nav-btn" onclick="moveSlide(1)">▶</button>
-    </div>
+<!-- MAIN -->
+<main id="main-content">
 
-    <button id="music-btn" onclick="toggleMusic()">
-        <span id="m-icon">🎵</span> <span id="m-text">PLAY MUSIC ▶</span>
-    </button>
-    <div id="yt-player" style="display: none;"></div>
+    <header class="site-header">
+        <p class="header-label">memory archive — 2024–2026</p>
+        <h2 class="header-title">
+            <span>1.6</span>
+            <span class="italic-line">Years</span>
+        </h2>
+        <div class="header-divider"></div>
+        <p class="header-sub">a curated archive of every beautiful moment 🖤</p>
+    </header>
 
-    <script>
-        const photos = [
-            { src: '1.jpg', cap: '💖' }, { src: '2.jpg', cap: '😜' }, { src: '3.jpg', cap: 'เงาเท่ๆ 😎' },
-            { src: '4.jpg', cap: '✨' }, { src: '5.jpg', cap: '👀' }, { src: '6.jpg', cap: '✌️' },
-            { src: '7.jpg', cap: '🌻' }, { src: '8.jpg', cap: '😝' }, { src: '9.jpg', cap: '🫶' },
-            { src: '10.jpg', cap: '🌊' }, { src: '11.jpg', cap: 'สดใสสุดๆ ☀️' }, { src: '12.jpg', cap: '🏖️' },
-            { src: '13.jpg', cap: '🌟' }, { src: '14.jpg', cap: '📷' }, { src: '15.jpg', cap: '😋' },
-            { src: '16.jpg', cap: '👟' }, { src: '17.jpg', cap: '🌱' }, { src: '18.jpg', cap: 'เดินเล่น 🚶‍♀️' },
-            { src: '19.jpg', cap: '😆' }, { src: '20.jpg', cap: 'หมั่นเขี้ยว! 🤏' }, { src: '21.jpg', cap: '🍦' },
-            { src: '22.jpg', cap: '🥰' },
-            { src: '1592_0.jpg', cap: 'เจ้าตูบ 🐕' }, { src: '1593_0.jpg', cap: '🐾' },
-            { src: '1603_0.jpg', cap: 'เผลอๆ 📸' }, { src: '1604_0.jpg', cap: 'ลมเย็นๆ 🌬️' },
-            { src: 'LINE_ALBUM_with u_260601_1.jpg', cap: '🌸' }, { src: 'LINE_ALBUM_with u_260601_2.jpg', cap: '🥤' },
-            { src: 'LINE_ALBUM_with u_260601_3.jpg', cap: '🌺' }, { src: 'LINE_ALBUM_with u_260601_4.jpg', cap: 'ธรรมชาติ 🌿' },
-            { src: 'LINE_ALBUM_with u_260601_5.jpg', cap: '🌷' }, { src: 'LINE_ALBUM_with u_260601_6.jpg', cap: 'คูลๆ 😎' },
-            { src: 'LINE_ALBUM_with u_260601_7.jpg', cap: 'ยิ้มหวาน 😊' }
-        ];
+    <section class="gallery-section">
+        <div class="gallery-grid" id="gallery-container"></div>
+    </section>
 
-        const container = document.getElementById('dynamic-spreads');
-        for (let i = 0; i < photos.length; i += 2) {
-            const leftData = photos[i];
-            const rightData = photos[i+1];
+    <footer class="site-footer">
+        <p class="footer-heart">made with <span>♥</span> — and a little bit of magic</p>
+    </footer>
+</main>
 
-            const rotL = (Math.random() * 6 - 3).toFixed(1);
-            const rotR = (Math.random() * 6 - 3).toFixed(1);
+<button id="music-btn" onclick="toggleMusic()" title="Toggle music">🎵</button>
+<div id="yt-player" style="display:none"></div>
 
-            const spreadDiv = document.createElement('div');
-            spreadDiv.className = 'spread';
+<script>
+// ========= CURSOR =========
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
 
-            let leftHTML = `
-                <div class="page-left">
-                    <div class="polaroid" style="--r: ${rotL}">
-                        <div class="tape"></div>
-                        <div class="img-box"><img src="${leftData.src}" onerror="this.src='https://via.placeholder.com/400?text=กำลังโหลดรูป...'"></div>
-                        <div class="caption">${leftData.cap}</div>
-                    </div>
-                </div>
-            `;
+document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+});
+const lerp = (a, b, t) => a + (b - a) * t;
+(function animCursor() {
+    rx = lerp(rx, mx, 0.12); ry = lerp(ry, my, 0.12);
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('button, a, .photo-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-expand'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-expand'));
+});
 
-            let rightHTML = '';
-            if (rightData) {
-                rightHTML = `
-                    <div class="page-right">
-                        <div class="polaroid" style="--r: ${rotR}">
-                            <div class="tape"></div>
-                            <div class="img-box"><img src="${rightData.src}" onerror="this.src='https://via.placeholder.com/400?text=กำลังโหลดรูป...'"></div>
-                            <div class="caption">${rightData.cap}</div>
-                        </div>
-                    </div>
-                `;
-            } else {
-                rightHTML = `
-                    <div class="page-right">
-                        <h3 style="color: var(--rose-gold)">Memories Card 🌸</h3>
-                    </div>
-                `;
+// ========= PARTICLES =========
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+const palette = ['rgba(245,214,214,0.5)','rgba(212,165,116,0.4)','rgba(232,160,160,0.35)','rgba(255,255,255,0.2)'];
+class Particle {
+    constructor() { this.reset(); }
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.r = Math.random() * 1.5 + 0.3;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+        this.color = palette[Math.floor(Math.random() * palette.length)];
+        this.life = Math.random();
+        this.decay = Math.random() * 0.003 + 0.001;
+    }
+    draw() {
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+        ctx.fillStyle = this.color; ctx.globalAlpha = this.life * 0.8; ctx.fill();
+    }
+    update() {
+        this.x += this.vx; this.y += this.vy;
+        this.life -= this.decay;
+        if (this.life <= 0 || this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+        this.draw();
+    }
+}
+
+const particles = Array.from({ length: 100 }, () => new Particle());
+(function animP() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha = 1;
+    particles.forEach(p => p.update());
+    requestAnimationFrame(animP);
+})();
+
+// ========= INTRO SEQUENCE =========
+window.addEventListener('load', () => {
+    setTimeout(() => { document.getElementById('ie').classList.add('reveal'); }, 300);
+    setTimeout(() => { document.getElementById('ib').classList.add('reveal'); }, 600);
+    setTimeout(() => { document.getElementById('it').classList.add('reveal'); }, 1000);
+
+    const bls = ['bl0','bl1','bl2','bl3'];
+    bls.forEach((id, i) => {
+        setTimeout(() => { document.getElementById(id).style.opacity = 1; }, 1400 + i * 350);
+    });
+    setTimeout(() => { document.getElementById('enter-btn').classList.add('reveal'); }, 2900);
+});
+
+function unlockVault() {
+    spawnPetals();
+    const mb = document.getElementById('music-btn');
+    mb.style.display = 'flex'; toggleMusic();
+
+    const intro = document.getElementById('intro-screen');
+    intro.style.opacity = '0'; intro.style.transform = 'scale(1.06)';
+    setTimeout(() => {
+        intro.style.display = 'none';
+        const main = document.getElementById('main-content');
+        main.style.display = 'block';
+        requestAnimationFrame(() => { main.style.opacity = '1'; });
+        setTimeout(observeCards, 100);
+    }, 1400);
+}
+
+// ========= FLOATING PETALS =========
+function spawnPetals() {
+    for (let i = 0; i < 18; i++) {
+        const p = document.createElement('div');
+        p.className = 'petal';
+        const pinks = ['#f5d6d6','#f0c8c8','#fae0d8','#e8c4b8','#f5e0c0'];
+        p.style.background = pinks[Math.floor(Math.random() * pinks.length)];
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        p.style.animationDelay = (Math.random() * 4) + 's';
+        p.style.width = p.style.height = (Math.random() * 6 + 4) + 'px';
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 12000);
+    }
+}
+
+// ========= GALLERY =========
+const photos = [
+    { src: '1.jpg', cap: '💖' }, { src: '2.jpg', cap: '😜' }, { src: '3.jpg', cap: '😎' },
+    { src: '4.jpg', cap: '✨' }, { src: '5.jpg', cap: '👀' }, { src: '6.jpg', cap: '✌️' },
+    { src: '7.jpg', cap: '🌻' }, { src: '8.jpg', cap: '😝' }, { src: '9.jpg', cap: '🫶' },
+    { src: '10.jpg', cap: '🌊' }, { src: '11.jpg', cap: '☀️' }, { src: '12.jpg', cap: '🏖️' },
+    { src: '13.jpg', cap: '🌟' }, { src: '14.jpg', cap: '📷' }, { src: '15.jpg', cap: '😋' },
+    { src: '16.jpg', cap: '👟' }, { src: '17.jpg', cap: '🌱' }, { src: '18.jpg', cap: '🚶‍♀️' },
+    { src: '19.jpg', cap: '😆' }, { src: '20.jpg', cap: '🤏' }, { src: '21.jpg', cap: '🍦' },
+    { src: '22.jpg', cap: '🥰' },
+    { src: '1592_0.jpg', cap: '🐕' }, { src: '1593_0.jpg', cap: '🐾' },
+    { src: '1603_0.jpg', cap: '📸' }, { src: '1604_0.jpg', cap: '🌬️' },
+    { src: 'LINE_ALBUM_with u_260601_1.jpg', cap: '🌸' }, { src: 'LINE_ALBUM_with u_260601_2.jpg', cap: '🥤' },
+    { src: 'LINE_ALBUM_with u_260601_3.jpg', cap: '🌺' }, { src: 'LINE_ALBUM_with u_260601_4.jpg', cap: '🌿' },
+    { src: 'LINE_ALBUM_with u_260601_5.jpg', cap: '🌷' }, { src: 'LINE_ALBUM_with u_260601_6.jpg', cap: '😎' },
+    { src: 'LINE_ALBUM_with u_260601_7.jpg', cap: '😊' }
+];
+
+const container = document.getElementById('gallery-container');
+photos.forEach((photo, i) => {
+    const card = document.createElement('div');
+    card.className = 'photo-card';
+    const idx = String(i + 1).padStart(3, '0');
+    card.innerHTML = `
+        <div class="card-img-wrap">
+            <img src="${photo.src}" loading="lazy" alt="memory ${idx}"
+                 onerror="this.src='https://via.placeholder.com/400x500/251915/9e7e74?text=♥'">
+        </div>
+        <div class="card-footer">
+            <span class="card-index">MEM_${idx}</span>
+            <span class="card-emoji">${photo.cap}</span>
+        </div>
+    `;
+    // spotlight per card
+    const wrap = card.querySelector('.card-img-wrap');
+    card.addEventListener('mousemove', e => {
+        const r = wrap.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+        const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
+        wrap.style.setProperty('--mx', x + '%');
+        wrap.style.setProperty('--my', y + '%');
+    });
+    container.appendChild(card);
+});
+
+// ========= SCROLL REVEAL =========
+function observeCards() {
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                obs.unobserve(e.target);
             }
+        });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.photo-card').forEach(c => obs.observe(c));
+}
 
-            spreadDiv.innerHTML = leftHTML + rightHTML;
-            container.appendChild(spreadDiv);
-        }
+// ========= YOUTUBE =========
+let player, musicOn = false;
+const ytTag = document.createElement('script');
+ytTag.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(ytTag);
 
-        let currentIdx = 0;
-        const track = document.getElementById('track');
-        const totalSlides = document.querySelectorAll('.spread').length;
-        const indicator = document.getElementById('page-indicator');
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('yt-player', {
+        height: '0', width: '0', videoId: 'yWfO_hE81WQ',
+        playerVars: { autoplay: 0, loop: 1, playlist: 'yWfO_hE81WQ' }
+    });
+}
 
-        function moveSlide(direction) {
-            currentIdx += direction;
-            if (currentIdx < 0) currentIdx = 0;
-            if (currentIdx >= totalSlides) currentIdx = totalSlides - 1;
-
-            track.style.transform = `translate3d(-${currentIdx * 100}%, 0, 0)`;
-            indicator.innerText = `${currentIdx + 1} / ${totalSlides}`;
-        }
-
-        let player;
-        let isMusicPlaying = false;
-        const mText = document.getElementById('m-text');
-        const mIcon = document.getElementById('m-icon');
-
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                height: '0', width: '0', videoId: 'yWfO_hE81WQ',
-                playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'yWfO_hE81WQ' },
-                events: {
-                    'onReady': () => { mText.innerText = "PLAY MUSIC ▶"; }
-                }
-            });
-        }
-
-        function toggleMusic() {
-            if (!player || !player.getPlayerState) return;
-            const state = player.getPlayerState();
-            if (state === YT.PlayerState.PLAYING) {
-                player.pauseVideo();
-                isMusicPlaying = false;
-                mText.innerText = "PLAY MUSIC ▶";
-                mIcon.innerText = "🔇";
-            } else {
-                player.playVideo();
-                isMusicPlaying = true;
-                mText.innerText = "PAUSE MUSIC ⏸";
-                mIcon.innerText = "🔊";
-            }
-        }
-    </script>
+function toggleMusic() {
+    const btn = document.getElementById('music-btn');
+    if (!player || typeof player.getPlayerState !== 'function') return;
+    if (player.getPlayerState() === 1) {
+        player.pauseVideo(); btn.textContent = '🎵'; btn.classList.remove('playing'); musicOn = false;
+    } else {
+        player.playVideo(); btn.textContent = '🔊'; btn.classList.add('playing'); musicOn = true;
+    }
+}
+</script>
 </body>
 </html>
