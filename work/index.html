@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fourtoyou — รับทำบอท Discord · เว็บ · Roblox</title>
+<meta name="description" content="รับทำบอท Discord ตามสั่ง เว็บหน้าเดียว และสคริปต์/แมพ Roblox — ส่งเร็ว ทดสอบจริง แก้จนใช้ได้ พร้อมคู่มือติดตั้ง">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0d12;--card:#151824;--card2:#1c2030;--line:#262b3b;--acc:#2ee6a8;--acc2:#1aa87b;--txt:#e8ebf3;--txt2:#b9bdd0;--dim:#7e849c;--warn:#ffc857;--bad:#ff5d7a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:"Noto Sans Thai",system-ui,Segoe UI,sans-serif;line-height:1.6}
+  a{color:var(--acc);text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.3px}
+  .logo span{color:var(--acc)}
+  nav a{color:var(--txt2);margin-left:18px;font-size:14px}
+  .hero{padding:48px 0 28px}
+  .hero h1{font-size:clamp(28px,5vw,44px);line-height:1.2;margin:0 0 14px;font-weight:800}
+  .hero h1 em{color:var(--acc);font-style:normal}
+  .hero p{color:var(--txt2);font-size:18px;max-width:720px;margin:0 0 22px}
+  .btn{display:inline-block;background:var(--acc);color:#04150e;font-weight:800;padding:12px 22px;border-radius:12px}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line);margin-left:10px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .badge{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--txt2)}
+  h2{font-size:26px;margin:44px 0 6px;font-weight:800}
+  .sub{color:var(--dim);margin:0 0 18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .card h3{margin:0 0 6px;font-size:20px}
+  .card .from{color:var(--acc);font-weight:800;font-size:22px}
+  .card .from small{color:var(--dim);font-weight:400;font-size:13px}
+  .card ul{padding-left:18px;margin:12px 0;color:var(--txt2)}
+  .card li{margin:4px 0}
+  .tier{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line);padding:9px 0;font-size:14px}
+  .tier b{color:var(--txt)}
+  .tier .p{color:var(--acc);white-space:nowrap;font-weight:700}
+  .meta{color:var(--dim);font-size:13px;margin-top:10px}
+  .work img{width:100%;border-radius:12px;border:1px solid var(--line);display:block;margin-top:10px}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;counter-reset:s}
+  .step{background:var(--card2);border-radius:14px;padding:16px;position:relative}
+  .step::before{counter-increment:s;content:counter(s);position:absolute;top:-10px;left:14px;background:var(--acc);color:#04150e;font-weight:800;border-radius:8px;padding:0 9px;font-size:13px}
+  .step b{display:block;margin:6px 0 4px}
+  .step span{color:var(--txt2);font-size:14px}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+  summary{cursor:pointer;font-weight:600}
+  details p{color:var(--txt2);margin:8px 0 0}
+  .contact{background:linear-gradient(135deg,#132a24,#151824);border:1px solid #1f4a3c;border-radius:18px;padding:26px;margin:40px 0}
+  .contact .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+  .contact .row a{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 16px;color:var(--txt)}
+  .note{color:var(--warn);font-size:13px}
+  footer{color:var(--dim);font-size:13px;padding:30px 0 40px;border-top:1px solid var(--line);margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">four<span>to</span>you</div>
+    <nav><a href="#services">บริการ</a><a href="#work">ผลงาน</a><a href="#how">ขั้นตอน</a><a href="#faq">คำถาม</a><a href="#contact">ติดต่อ</a></nav>
+  </header>
+
+  <section class="hero">
+    <h1>รับทำ<em>บอท Discord</em> · <em>เว็บหน้าเดียว</em> · <em>สคริปต์ Roblox</em><br>ส่งเร็ว ทดสอบจริง แก้จนใช้ได้</h1>
+    <p>งานทุกชิ้นส่งพร้อม<b>คู่มือติดตั้งภาษาไทย</b>และ<b>ตัวเปิดใช้งานคลิกเดียว</b> — คุณไม่ต้องเขียนโค้ดเป็น ไม่ต้องลงอะไรยุ่งยาก · แก้ไขได้ 2 รอบ · ดูแลหลังส่งมอบ 7 วัน</p>
+    <a class="btn" href="#contact">ทักมาคุยงาน (ฟรี ไม่มีค่าประเมิน)</a><a class="btn ghost" href="#work">ดูผลงาน</a>
+    <div class="badges"><span class="badge">⚡ เริ่มงานได้ทันที</span><span class="badge">🧪 ทดสอบกับของจริงก่อนส่ง</span><span class="badge">📘 คู่มือไทย + วิดีโอสั้น</span><span class="badge">🔒 ไม่เก็บรหัสผ่าน/โทเคนของคุณ</span></div>
+  </section>
+
+  <h2 id="services">บริการ</h2>
+  <p class="sub">ราคาเริ่มต้น — งานจริงประเมินตามรายละเอียด แจ้งราคาชัดเจนก่อนเริ่มทุกครั้ง</p>
+  <div class="grid">
+    <div class="card">
+      <h3>🤖 บอท Discord ตามสั่ง</h3>
+      <div class="from">เริ่ม 590.- <small>/ ส่ง 2–5 วัน</small></div>
+      <ul>
+        <li>ต้อนรับสมาชิก · ประกาศ · ปุ่มรับยศ (role) · ตั้งเวลาโพสต์</li>
+        <li>คำสั่ง <code>/slash</code> เฉพาะเซิร์ฟคุณ · ระบบแต้ม/เลเวล/ตั๋ว</li>
+        <li>เชื่อมข้อมูลภายนอก (เกม, เว็บ, Google Sheets) · AI ตอบแชท</li>
+      </ul>
+      <div class="tier"><span><b>เริ่มต้น</b> ต้อนรับ + ประกาศ + role</span><span class="p">590.-</span></div>
+      <div class="tier"><span><b>มาตรฐาน</b> + คำสั่งเฉพาะทาง 5–8 คำสั่ง + ฐานข้อมูล</span><span class="p">1,490.-</span></div>
+      <div class="tier"><span><b>ระบบใหญ่</b> เชื่อม API / AI / แดชบอร์ด</span><span class="p">2,990.- ขึ้นไป</span></div>
+      <div class="meta">ส่งเป็นโค้ด + ตัวเปิดคลิกเดียว รันบนเครื่องคุณได้เลย · หรือแนะนำโฮสต์ฟรีให้</div>
+    </div>
+    <div class="card">
+      <h3>🌐 เว็บหน้าเดียว / Landing Page</h3>
+      <div class="from">เริ่ม 1,290.- <small>/ ส่ง 2–4 วัน</small></div>
+      <ul>
+        <li>หน้าแนะนำร้าน/บริการ/โปรไฟล์ · รองรับมือถือ · โหลดไว</li>
+        <li>ปุ่ม LINE / โทร / แผนที่ · ฟอร์มติดต่อส่งเข้าอีเมล/LINE</li>
+        <li>โฮสต์<b>ฟรี</b> (GitHub Pages / Cloudflare) · ต่อโดเมนเองได้</li>
+      </ul>
+      <div class="tier"><span><b>หน้าเดียว</b> ดีไซน์ตามแบรนด์ + ปุ่มติดต่อ</span><span class="p">1,290.-</span></div>
+      <div class="tier"><span><b>หลายหน้า</b> 3–5 หน้า + ฟอร์ม + SEO พื้นฐาน</span><span class="p">2,490.-</span></div>
+      <div class="meta">ไม่มีค่ารายเดือน ไม่ผูกกับแพลตฟอร์มไหน ได้ไฟล์ทั้งหมดไปเป็นของคุณ</div>
+    </div>
+    <div class="card">
+      <h3>🎮 Roblox: สคริปต์ / ระบบในเกม / แมพ</h3>
+      <div class="from">เริ่ม 990.- <small>/ ประเมินตามงาน</small></div>
+      <ul>
+        <li>ระบบในเกม (Lua): ร้านค้า, เลเวล, เควสต์, เซฟข้อมูล (DataStore)</li>
+        <li>แก้บั๊ก / ปรับ performance ของเกมที่มีอยู่</li>
+        <li>เครื่องมือช่วยผู้เล่น/ผู้พัฒนา (ทำมาแล้วจริง — ดูผลงานด้านล่าง)</li>
+      </ul>
+      <div class="tier"><span><b>สคริปต์เดี่ยว</b> 1 ระบบ</span><span class="p">990.-</span></div>
+      <div class="tier"><span><b>ชุดระบบ</b> 3 ระบบขึ้นไป / แมพเล็ก</span><span class="p">2,990.- ขึ้นไป</span></div>
+      <div class="meta">ทำตามกติกาของ Roblox เท่านั้น — ไม่รับงานโกง/บอทเล่นแทน</div>
+    </div>
+  </div>
+
+  <h2 id="work">ผลงาน</h2>
+  <p class="sub">ของจริงที่ใช้งานอยู่ทุกวัน เปิดโค้ดให้ดูได้</p>
+  <div class="grid">
+    <div class="card work">
+      <h3>Roblox Toolkit</h3>
+      <p style="color:var(--txt2);margin:0">โปรแกรม Windows สำหรับผู้เล่น Roblox: ตรวจสุขภาพเครื่องคลิกเดียว, ปรับความลื่น (FastFlag ตามกติกาใหม่ของ Roblox), เฝ้าเน็ต/วิเคราะห์ว่าหลุดเพราะอะไร, สถิติการเล่น, อัปเดตตัวเองจาก GitHub</p>
+      <img src="img/toolkit_1200.png" alt="หน้าจอ Roblox Toolkit" loading="lazy">
+      <div class="meta"><a href="https://github.com/fourtoyou/RobloxToolkit" target="_blank" rel="noopener">github.com/fourtoyou/RobloxToolkit</a> · Python · 20+ เวอร์ชัน</div>
+    </div>
+    <div class="card work">
+      <h3>Roblox Server Finder (ส่วนขยาย Chrome)</h3>
+      <p style="color:var(--txt2);margin:0">แผงใต้ปุ่ม Play บนเว็บ Roblox: หาเซิร์ฟที่คนน้อย/ping ต่ำ กดเข้าได้เลย, ประวัติเซิร์ฟที่เคยเข้า, แจ้งเตือน, สั่งโปรแกรมบนเครื่องจากเบราว์เซอร์อย่างปลอดภัย (จับคู่ด้วยรหัส)</p>
+      <div class="meta"><a href="https://github.com/fourtoyou/RobloxServerFinder" target="_blank" rel="noopener">github.com/fourtoyou/RobloxServerFinder</a> · Chrome MV3</div>
+      <h3 style="margin-top:22px">บอท Discord "หมา"</h3>
+      <p style="color:var(--txt2);margin:0">66 คำสั่ง: เพลง (YouTube/Spotify), ดูรูปแล้วตอบ (AI + OCR), ข้อมูลเกม Roblox, แจ้งเตือนเกมอัปเดต, ควบคุมโปรแกรมบนเครื่องจากมือถือ, สถิติ/รายงานอัตโนมัติ — รันต่อเนื่อง 24 ชม. มีตัวเฝ้ารีสตาร์ทเอง</p>
+      <div class="meta">discord.py · SQLite · Ollama (AI ในเครื่อง)</div>
+    </div>
+  </div>
+
+  <h2 id="how">ขั้นตอนทำงาน</h2>
+  <p class="sub">โปร่งใสทุกขั้น — มัดจำครึ่งเดียว ส่วนที่เหลือจ่ายเมื่อได้ลองของจริงแล้ว</p>
+  <div class="steps">
+    <div class="step"><b>ทักมาเล่า</b><span>อยากได้อะไร ใช้ที่ไหน มีตัวอย่างไหม — ประเมินฟรี</span></div>
+    <div class="step"><b>เสนอราคา+เวลา</b><span>สรุปเป็นข้อๆ ราคาชัดเจน ไม่มีบวกทีหลัง</span></div>
+    <div class="step"><b>เริ่มงาน</b><span>มัดจำ 50% ผ่าน PromptPay แล้วเริ่มทันที</span></div>
+    <div class="step"><b>ส่งเดโม</b><span>ให้ลองใช้จริงก่อน แก้ได้ 2 รอบ</span></div>
+    <div class="step"><b>ส่งมอบ</b><span>จ่ายส่วนที่เหลือ → รับไฟล์ทั้งหมด + คู่มือไทย + ดูแล 7 วัน</span></div>
+  </div>
+
+  <h2 id="faq">คำถามที่เจอบ่อย</h2>
+  <details><summary>บอทต้องเปิดเครื่องไว้ตลอดไหม?</summary><p>บอทต้องมีที่รัน 24 ชม. ถ้าคุณมีคอม/โน้ตบุ๊กที่เปิดทิ้งไว้ก็ใช้ได้เลย (ส่งตัวเปิดคลิกเดียว + ตัวเฝ้ารีสตาร์ทให้) หรือแนะนำโฮสต์ฟรี/ราคาถูก พร้อมช่วยติดตั้งให้ครั้งแรก</p></details>
+  <details><summary>ต้องเตรียมอะไรบ้าง?</summary><p>บอท Discord: สิทธิ์แอดมินในเซิร์ฟคุณ · เว็บ: ข้อความ/รูป/โลโก้ที่อยากใส่ · Roblox: สิทธิ์แก้เกมใน Studio — <b>ไม่ต้องให้รหัสผ่านใดๆ</b> โทเคนบอทคุณสร้างเองตามคู่มือ ผมไม่เก็บ</p></details>
+  <details><summary>ราคาสูงกว่าที่แจ้งได้ไหม?</summary><p>ราคาในหน้านี้คือราคาเริ่มต้นของขอบเขตที่ระบุ ถ้างานซับซ้อนกว่านั้นจะแจ้งราคาเต็มก่อนเริ่ม ตกลงแล้วไม่บวกเพิ่ม</p></details>
+  <details><summary>ทำไมถึงส่งเร็ว?</summary><p>มีชุดเครื่องมือและโค้ดพื้นฐานที่ทดสอบมาแล้ว (ดูผลงาน) ทำให้ใช้เวลากับส่วนที่เป็นของคุณจริงๆ ไม่ต้องเริ่มจากศูนย์ทุกครั้ง</p></details>
+
+  <section class="contact" id="contact">
+    <h2 style="margin:0 0 6px">ทักมาคุยงานได้เลย</h2>
+    <p style="color:var(--txt2);margin:0">ตอบภายในวันเดียวกัน · เล่าคร่าวๆ ก็พอ เดี๋ยวถามต่อเอง</p>
+    <div class="row">
+      <a href="https://discord.com/users/526718014817828864" target="_blank" rel="noopener" id="c-discord">💬 Discord: <b>doggy8566</b></a>
+      <a href="#" id="c-line" onclick="navigator.clipboard&&navigator.clipboard.writeText('0855241501');this.querySelector('b').textContent='คัดลอกเบอร์แล้ว ✓';return false;">🟢 LINE (เพิ่มเพื่อนด้วยเบอร์): <b>085-524-1501</b></a>
+    </div>
+    <p style="color:var(--txt2);font-size:14px;margin-top:14px">💳 การจ่ายเงิน: <b>มัดจำ 50% ผ่าน PromptPay</b> ตอนเริ่มงาน · ส่วนที่เหลือจ่ายหลังลองเดโมแล้วพอใจ · ออกใบเสร็จ/สรุปงานให้ทุกครั้ง</p>
+  </section>
+
+  <footer>© 2026 fourtoyou · ทำงานตามกติกาของแพลตฟอร์ม (Discord / Roblox) เท่านั้น · ไม่รับงานโกง บอทเล่นแทน หรือละเมิดผู้อื่น</footer>
+</div>
+</body>
+</html>
