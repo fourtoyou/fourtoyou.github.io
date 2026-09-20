@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fourtoyou — Discord bots · Websites · Roblox scripting</title>
+<meta name="description" content="Custom Discord bots, one-page websites and Roblox Lua systems — fast delivery, tested on real servers, revisions until it works, setup guide included">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0d12;--card:#151824;--card2:#1c2030;--line:#262b3b;--acc:#2ee6a8;--acc2:#1aa87b;--txt:#e8ebf3;--txt2:#b9bdd0;--dim:#7e849c;--warn:#ffc857;--bad:#ff5d7a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:"Noto Sans Thai",system-ui,Segoe UI,sans-serif;line-height:1.6}
+  a{color:var(--acc);text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.3px}
+  .logo span{color:var(--acc)}
+  nav a{color:var(--txt2);margin-left:18px;font-size:14px}
+  .hero{padding:48px 0 28px}
+  .hero h1{font-size:clamp(28px,5vw,44px);line-height:1.2;margin:0 0 14px;font-weight:800}
+  .hero h1 em{color:var(--acc);font-style:normal}
+  .hero p{color:var(--txt2);font-size:18px;max-width:720px;margin:0 0 22px}
+  .btn{display:inline-block;background:var(--acc);color:#04150e;font-weight:800;padding:12px 22px;border-radius:12px}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line);margin-left:10px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .badge{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--txt2)}
+  h2{font-size:26px;margin:44px 0 6px;font-weight:800}
+  .sub{color:var(--dim);margin:0 0 18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .card h3{margin:0 0 6px;font-size:20px}
+  .card .from{color:var(--acc);font-weight:800;font-size:22px}
+  .card .from small{color:var(--dim);font-weight:400;font-size:13px}
+  .card ul{padding-left:18px;margin:12px 0;color:var(--txt2)}
+  .card li{margin:4px 0}
+  .tier{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line);padding:9px 0;font-size:14px}
+  .tier b{color:var(--txt)}
+  .tier .p{color:var(--acc);white-space:nowrap;font-weight:700}
+  .meta{color:var(--dim);font-size:13px;margin-top:10px}
+  .work img{width:100%;border-radius:12px;border:1px solid var(--line);display:block;margin-top:10px}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;counter-reset:s}
+  .step{background:var(--card2);border-radius:14px;padding:16px;position:relative}
+  .step::before{counter-increment:s;content:counter(s);position:absolute;top:-10px;left:14px;background:var(--acc);color:#04150e;font-weight:800;border-radius:8px;padding:0 9px;font-size:13px}
+  .step b{display:block;margin:6px 0 4px}
+  .step span{color:var(--txt2);font-size:14px}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+  summary{cursor:pointer;font-weight:600}
+  details p{color:var(--txt2);margin:8px 0 0}
+  .contact{background:linear-gradient(135deg,#132a24,#151824);border:1px solid #1f4a3c;border-radius:18px;padding:26px;margin:40px 0}
+  .contact .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+  .contact .row a{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 16px;color:var(--txt)}
+  .note{color:var(--warn);font-size:13px}
+  footer{color:var(--dim);font-size:13px;padding:30px 0 40px;border-top:1px solid var(--line);margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">four<span>to</span>you</div>
+    <nav><a href="#services">Services</a><a href="#work">Work</a><a href="#how">Process</a><a href="#faq">FAQ</a><a href="#contact">Contact</a><a href="../" style="color:var(--acc)">ไทย</a></nav>
+  </header>
+
+  <section class="hero">
+    <h1><em>Discord bots</em> · <em>one-page websites</em> · <em>Roblox Lua systems</em><br>Delivered fast, tested for real, revised until it works</h1>
+    <p>Every job ships with an <b>illustrated setup guide</b> and a <b>one-click launcher</b> — you don't need to code or install anything complicated · 2 revision rounds · 7 days of support after delivery</p>
+    <a class="btn" href="#contact">Message me (free quote)</a><a class="btn ghost" href="#work">See work</a>
+    <div class="badges"><span class="badge">⚡ Can start today</span><span class="badge">🧪 Tested on a live server before delivery</span><span class="badge">📘 Setup guide included</span><span class="badge">🔒 I never ask for your password or tokens</span></div>
+  </section>
+
+  <h2 id="services">Services</h2>
+  <p class="sub">Starting prices — every job gets a fixed quote before work starts, no surprises</p>
+  <div class="grid">
+    <div class="card">
+      <h3>🤖 Custom Discord bot</h3>
+      <div class="from">from $20 <small>/ 2–5 days</small></div>
+      <ul>
+        <li>Welcome messages · announcements · button/reaction roles · scheduled posts</li>
+        <li>Custom <code>/slash</code> commands · points, levels, tickets, giveaways</li>
+        <li>Integrations (Roblox, web APIs, Google Sheets) · AI chat replies</li>
+      </ul>
+      <div class="tier"><span><b>Basic</b> welcome + announcements + roles</span><span class="p">$20</span></div>
+      <div class="tier"><span><b>Standard</b> + 5–8 custom commands + database</span><span class="p">$45</span></div>
+      <div class="tier"><span><b>Advanced</b> APIs / AI / web dashboard</span><span class="p">$90+</span></div>
+      <div class="meta">Delivered as full source + one-click launcher for any always-on PC · or I help you set up a free/cheap host</div>
+    </div>
+    <div class="card">
+      <h3>🌐 One-page website / landing page</h3>
+      <div class="from">from $35 <small>/ 2–4 days</small></div>
+      <ul>
+        <li>Business / service / portfolio page · mobile-first · loads instantly</li>
+        <li>Contact buttons (WhatsApp / LINE / call / map) · contact form to your email</li>
+        <li><b>Free</b> hosting (GitHub Pages / Cloudflare) · your own domain supported</li>
+      </ul>
+      <div class="tier"><span><b>One page</b> on-brand design + contact buttons</span><span class="p">$35</span></div>
+      <div class="tier"><span><b>Multi-page</b> 3–5 pages + form + basic SEO</span><span class="p">$70</span></div>
+      <div class="meta">No monthly fees, no platform lock-in — you get every file</div>
+    </div>
+    <div class="card">
+      <h3>🎮 Roblox: Lua scripting / game systems</h3>
+      <div class="from">from $30 <small>/ quoted per job</small></div>
+      <ul>
+        <li>Game systems (Luau): shops &amp; currency, levels/XP, quests, round/lobby loops, DataStore saving</li>
+        <li>Bug fixing / performance tuning of existing games · RemoteEvent → Blink/ByteNet migration</li>
+        <li>Player/developer tooling (shipped for real — see work below)</li>
+      </ul>
+      <div class="tier"><span><b>Single system</b></span><span class="p">$30</span></div>
+      <div class="tier"><span><b>System bundle</b> 3+ systems / gameplay base</span><span class="p">$90+</span></div>
+      <div class="meta">Roblox rules only — no exploits, cheats or bot-play</div>
+    </div>
+  </div>
+
+  <h2 id="work">Work</h2>
+  <p class="sub">Real software used daily — source on GitHub</p>
+  <div class="grid">
+    <div class="card work">
+      <h3>Roblox Toolkit</h3>
+      <p style="color:var(--txt2);margin:0">Windows app for Roblox players: one-click PC health check, smoothness tuning (FastFlags within Roblox's current allowlist), network watch with disconnect-cause analysis, play statistics, self-updating from GitHub releases</p>
+      <img src="../img/toolkit_1200.png" alt="Roblox Toolkit screenshot" loading="lazy">
+      <div class="meta"><a href="https://github.com/fourtoyou/RobloxToolkit" target="_blank" rel="noopener">github.com/fourtoyou/RobloxToolkit</a> · Python · 20+ releases</div>
+    </div>
+    <div class="card work">
+      <h3>Roblox Server Finder (Chrome extension)</h3>
+      <p style="color:var(--txt2);margin:0">Panel under the Play button on roblox.com: find low-population / low-ping servers and join in one click, join history, notifications, and a secure pairing-code bridge to the desktop app</p>
+      <div class="meta"><a href="https://github.com/fourtoyou/RobloxServerFinder" target="_blank" rel="noopener">github.com/fourtoyou/RobloxServerFinder</a> · Chrome MV3</div>
+      <h3 style="margin-top:22px">Discord bot (66 commands)</h3>
+      <p style="color:var(--txt2);margin:0">Music (YouTube/Spotify), image Q&amp;A (local AI + OCR), Roblox game data, game-update alerts, remote control of the desktop app from a phone, automatic stats/reports — runs 24/7 with a self-restarting supervisor</p>
+      <div class="meta">discord.py · SQLite · Ollama (local AI)</div>
+    </div>
+  </div>
+
+  <h2 id="how">How it works</h2>
+  <p class="sub">Transparent at every step — 50% deposit, the rest only after you've tried the real thing</p>
+  <div class="steps">
+    <div class="step"><b>Tell me</b><span>what you need, where it runs, any examples — free quote</span></div>
+    <div class="step"><b>Quote + timeline</b><span>itemized scope, fixed price, no add-ons later</span></div>
+    <div class="step"><b>Start</b><span>50% deposit (Wise / Payoneer / Robux) and I start right away</span></div>
+    <div class="step"><b>Demo</b><span>try it live first · 2 revision rounds</span></div>
+    <div class="step"><b>Delivery</b><span>pay the balance → all files + setup guide + 7 days support</span></div>
+  </div>
+
+  <h2 id="faq">FAQ</h2>
+  <details><summary>Does the bot need a PC running 24/7?</summary><p>Yes, a bot needs somewhere to run. Any always-on PC works (one-click launcher + auto-restart supervisor included), or I'll help you set up a free/cheap host the first time.</p></details>
+  <details><summary>What do you need from me?</summary><p>Discord bot: admin on your server · website: your text/images/logo · Roblox: edit access in Studio or a Team Create invite — <b>never your password</b>; you create the bot token yourself following the guide, I don't keep it.</p></details>
+  <details><summary>Can the price go above the listed one?</summary><p>Listed prices are starting points for the scope shown. Bigger jobs get a full quote before we start — once agreed, it doesn't change.</p></details>
+  <details><summary>Why so fast?</summary><p>I already have tested building blocks and tooling (see work), so the time goes into the parts that are specific to you, not into starting from zero.</p></details>
+
+  <section class="contact" id="contact">
+    <h2 style="margin:0 0 6px">Let's talk</h2>
+    <p style="color:var(--txt2);margin:0">Replies within the same day (GMT+7) · a rough description is enough, I'll ask the rest</p>
+    <div class="row">
+      <a href="https://discord.com/users/526718014817828864" target="_blank" rel="noopener">💬 Discord: <b>doggy8566</b></a>
+      <a href="https://devforum.roblox.com/u/Samrock" target="_blank" rel="noopener">🎮 Roblox / DevForum: <b>Samrock</b></a>
+    </div>
+    <p style="color:var(--txt2);font-size:14px;margin-top:14px">💳 Payment: <b>50% deposit</b> via Wise or Payoneer (USD), or Robux — balance after you've tried the demo · milestones for bigger jobs</p>
+  </section>
+
+  <footer>© 2026 fourtoyou · Platform rules only (Discord / Roblox) — no cheats, bot-play or anything that harms others</footer>
+</div>
+</body>
+</html>
